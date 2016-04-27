@@ -110,11 +110,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\VisualBasic_AppFramework\Microsoft.VisualBasic.Architecture.Framework\+Microsoft.VisualBasic.Architecture.Framework.vbproj">
+    <ProjectReference Include="..\..\VisualBasic_AppFramework\Microsoft.VisualBasic.Architecture.Framework\+Microsoft.VisualBasic.Architecture.Framework.vbproj">
       <Project>{fecce1fd-e1d4-49e3-a668-60bb5e7aed99}</Project>
       <Name>+Microsoft.VisualBasic.Architecture.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\VisualBasic_AppFramework\Microsoft.VisualBasic.DataMining.Framework.DynamicProgramming\Microsoft.VisualBasic.DataMining.Framework.DynamicProgramming.vbproj">
+    <ProjectReference Include="..\..\VisualBasic_AppFramework\Microsoft.VisualBasic.DataMining.Framework.DynamicProgramming\Microsoft.VisualBasic.DataMining.Framework.DynamicProgramming.vbproj">
       <Project>{a903b744-c08d-4869-bc35-3dd25e36aa16}</Project>
       <Name>Microsoft.VisualBasic.DataMining.Framework.DynamicProgramming</Name>
     </ProjectReference>
