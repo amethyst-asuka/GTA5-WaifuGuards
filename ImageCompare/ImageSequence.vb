@@ -32,6 +32,12 @@ Public Class ImageSequence
         Call Me.New(hBitmap.FromBitmap(bitmap))
     End Sub
 
+    Public Function GetIndex(i As Integer) As Point
+        Dim y As Integer = i / RECT.Width
+        Dim x As Integer = i Mod RECT.Width
+        Return New Point(x, y)
+    End Function
+
     Public Overrides Function ToString() As String
         Return RECT.GetJson
     End Function
