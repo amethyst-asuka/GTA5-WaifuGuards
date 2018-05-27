@@ -4,22 +4,7 @@ Imports GTA.Math
 
 Public Class Waifus : Inherits Script
 
-    ReadOnly names$() = {
-        "nelliel",
-        "ram",
-        "rem",
-        "rmiku2014",
-        "rmiku2015",
-        "rmiku2016",
-        "tohka",
-        "tohru",
-        "yoshino",
-        "beatrice",
-        "kanna",
-        "kotori",
-        "megumin",
-        "megumin2"
-    }
+    ReadOnly names$() = NameList.LoadNames
     ReadOnly rand As New Random
     ReadOnly waifuGuards As New List(Of Ped)
 
