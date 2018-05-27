@@ -20,6 +20,10 @@ Module NameList
         "megumin2"
     }
 
+    ''' <summary>
+    ''' The directory location of the current script dll file.
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property AssemblyLocation As String
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get

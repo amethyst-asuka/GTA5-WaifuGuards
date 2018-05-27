@@ -23,6 +23,11 @@ Public Class Waifus : Inherits Script
         waifuGuards.Add(waifu)
     End Sub
 
+    ''' <summary>
+    ''' Press key ``Y`` for spawn a waifu.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Waifus_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If e.KeyCode = Keys.Y Then
             Call spawnWaifu(names(rand.Next(0, names.Length)))
