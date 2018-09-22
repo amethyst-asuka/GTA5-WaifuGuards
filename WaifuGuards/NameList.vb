@@ -5,10 +5,8 @@ Imports System.Windows.Forms
 Module NameList
 
     ReadOnly defaultWaifus$() = {
-        "nelliel",
         "ram",
         "rem",
-        "rmiku2014",
         "rmiku2015",
         "rmiku2016",
         "tohka",
@@ -16,9 +14,7 @@ Module NameList
         "yoshino",
         "beatrice",
         "kanna",
-        "kotori",
-        "megumin",
-        "megumin2"
+        "kotori"
     }
 
     ''' <summary>
@@ -38,7 +34,7 @@ Module NameList
     ''' <returns></returns>
     Public Function LoadNames() As String()
         Static waifus$ = Path.GetFullPath($"{AssemblyLocation}/waifus.txt")
-        MsgBox(waifus)
+
         If File.Exists(waifus) Then
             Return File.ReadAllLines(waifus) _
                 .Where(Function(s) Not String.IsNullOrWhiteSpace(s)) _
