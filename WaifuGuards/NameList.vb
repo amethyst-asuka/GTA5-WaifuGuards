@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Runtime.CompilerServices
+Imports System.Windows.Forms
 
 Module NameList
 
@@ -27,7 +28,7 @@ Module NameList
     Public ReadOnly Property AssemblyLocation As String
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
-            Return Path.GetDirectoryName(GetType(Waifus).Assembly.Location)
+            Return Path.GetDirectoryName(Application.ExecutablePath) & "/scripts"
         End Get
     End Property
 
@@ -37,9 +38,7 @@ Module NameList
     ''' <returns></returns>
     Public Function LoadNames() As String()
         Static waifus$ = Path.GetFullPath($"{AssemblyLocation}/waifus.txt")
-
         MsgBox(waifus)
-
         If File.Exists(waifus) Then
             Return File.ReadAllLines(waifus) _
                 .Where(Function(s) Not String.IsNullOrWhiteSpace(s)) _
