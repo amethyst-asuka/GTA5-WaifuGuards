@@ -13,14 +13,15 @@ Public Class Waifus : Inherits Script
     Shared ReadOnly twoSecond As New TimeSpan(0, 0, 2)
 
     Private Sub spawnWaifu(name As String)
-        Dim waifu As Ped = World.CreatePed(New Model(name), Game.Player.Character.GetOffsetInWorldCoords(New Vector3(rand.Next(1, 5), rand.Next(1, 5), 0)))
+        Dim offset As New Vector3(rand.Next(1, 5), 0, rand.Next(1, 5))
+        Dim waifu As Ped = World.CreatePed(New Model(name), Game.Player.Character.GetOffsetInWorldCoords(offset))
 
-        waifu.Weapons.Give(Native.WeaponHash.StunGun, 9999, True, True)
+        waifu.Weapons.Give(Native.WeaponHash.SMG, 9999, True, True)
         waifu.RelationshipGroup = Game.Player.Character.RelationshipGroup
         waifu.MaxHealth = 10000
         waifu.Armor = 10000
 
-        waifuGuards.Add(waifu)
+        Call waifuGuards.Add(waifu)
     End Sub
 
     ''' <summary>
@@ -38,12 +39,16 @@ Public Class Waifus : Inherits Script
         If (Now - lastCheck) >= twoSecond Then
             For Each waifu In waifuGuards
                 If waifu.IsDead Then
-                    waifu.Delete()
+                    Call waifu.Delete()
                 Else
+                    Dim offset As New Vector3(rand.Next(1, 5), 0, rand.Next(1, 5))
+
+                    ' If the player is running, then your waifus will running to you
+                    ' else walking
                     If Game.Player.Character.IsRunning Then
-                        waifu.Task.RunTo(Game.Player.Character.Position, False)
+                        Call waifu.Task.RunTo(Game.Player.Character.Position, False)
                     Else
-                        waifu.Task.GoTo(Game.Player.Character, New Vector3(rand.Next(1, 5), rand.Next(1, 5), 0))
+                        Call waifu.Task.GoTo(Game.Player.Character, offset)
                     End If
                 End If
             Next
@@ -51,6 +56,7 @@ Public Class Waifus : Inherits Script
             lastCheck = Now
         End If
 
+        ' Keeps alive
         For Each waifu In waifuGuards
             If Not waifu.IsDead Then
                 waifu.Health = 100
