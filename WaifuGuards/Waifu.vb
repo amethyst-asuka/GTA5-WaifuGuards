@@ -4,7 +4,7 @@ Imports GTA.Math
 
 Public Class Waifus : Inherits Script
 
-    ReadOnly names$() = NameList.LoadNames
+    ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
     ReadOnly waifuGuards As New List(Of Ped)
 

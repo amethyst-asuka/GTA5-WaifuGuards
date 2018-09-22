@@ -2,7 +2,7 @@
 Imports System.Runtime.CompilerServices
 Imports System.Windows.Forms
 
-Module NameList
+Module WaifuList
 
     ReadOnly defaultWaifus$() = {
         "ram",
