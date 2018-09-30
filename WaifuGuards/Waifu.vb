@@ -21,6 +21,7 @@ Public Class Waifus : Inherits Script
         waifu.RelationshipGroup = Game.Player.Character.RelationshipGroup
         waifu.MaxHealth = 10000
         waifu.Armor = 10000
+        waifu.IsInvincible = True
 
         Call waifuGuards.Add(waifu)
     End Sub
@@ -73,13 +74,10 @@ Public Class Waifus : Inherits Script
             lastCheck = Now
         End If
 
-        ' Keeps alive
         For Each waifu In waifuGuards
             If Not waifu.IsDead Then
-                waifu.Health += 100
-
-                If Game.Player.Character.IsShooting Then
-                    waifu.Task.ShootAt(Game.Player.Character.GetJackTarget)
+                If Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(waifu) Then
+                    Call waifu.Kill()
                 End If
             End If
         Next
