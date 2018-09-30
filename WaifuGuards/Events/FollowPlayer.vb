@@ -8,6 +8,10 @@ Public Class FollowPlayer : Inherits TickEvent
 
     Protected Overrides Sub DoEvent(script As Waifus)
         For Each waifu As Ped In script.waifuGuards
+            If waifu.IsInCombat Then
+                Continue For
+            End If
+
             If Not waifu.IsDead Then
                 Dim offset As Vector3 = script.offsetAroundMe()
                 Dim distance# = Game.Player.Character.Position.DistanceTo(waifu.Position)
