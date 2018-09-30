@@ -62,6 +62,9 @@ Public Class Waifus : Inherits Script
                     Exit For
                 End If
             Next
+        ElseIf e.KeyCode = Keys.U Then
+            ' union all your waifus
+            Call FollowPlayer.PlayerUnion(Me, Function() False)
         End If
     End Sub
 
@@ -70,11 +73,34 @@ Public Class Waifus : Inherits Script
             Call [event].Tick(Me)
         Next
 
-        For Each waifu As Ped In waifuGuards
+        For Each waifu As Ped In waifuGuards.ToArray
             If Not waifu.IsDead Then
                 If Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(waifu) Then
                     Call waifu.Kill()
                 End If
+
+                ' try to prevent kill each other
+                For Each partner As Ped In waifuGuards _
+                    .Where(Function(ped)
+                               Return Not ped Is waifu AndAlso Not ped.IsInCombat AndAlso Not ped.IsDead
+                           End Function)
+
+                    If waifu.IsInCombatAgainst(partner) Then
+                        Call waifu.Task.ClearAllImmediately()
+                    End If
+                Next
+
+                If waifu.IsInCombatAgainst(Game.Player.Character) Then
+                    Call waifu.Task.ClearAllImmediately()
+                End If
+            End If
+
+            Dim distance# = Game.Player.Character.Position.DistanceTo(waifu.Position)
+
+            ' removes too far away peds for release memory
+            If distance > 1000 Then
+                Call waifu.Delete()
+                Call waifuGuards.Remove(waifu)
             End If
         Next
     End Sub
