@@ -21,3 +21,12 @@ Dim miku2016 As Ped = World.CreatePed(New Model("miku2016"), pos)
 ```
 
 A miku will but created and positioning to a given location.
+
+## Credits
+
++ AddonPeds Editor: https://www.gta5-mods.com/scripts/addonpeds-asi-pedselector
++ OpenIV: https://www.gta5-mods.com/tools/openiv
++ ScriptHookVDotNet: https://github.com/crosire/scripthookvdotnet
++ Waifus Mega Pack: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz
++ Yosuga no Sora: https://www.gta5-mods.com/player/kasugano-sora-yosuga-no-sora-add-on
++ BILIBILI 2233 model: https://www.gta5-mods.com/player/bilibili-22-add-on 
