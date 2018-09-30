@@ -7,17 +7,24 @@ Public Class FollowPlayer : Inherits TickEvent
     End Sub
 
     Protected Overrides Sub DoEvent(script As Waifus)
-        For Each waifu In script.waifuGuards
-            If Not waifu.IsDead Then
-                Dim offset As Vector3 = script.offsetAroundMe()
+        Call PlayerUnion(script, skipAssert:=Function(waifu) waifu.IsDead OrElse waifu.IsInCombat)
+    End Sub
 
-                ' If the player is running, then your waifus will running to you
-                ' else walking
-                If Game.Player.Character.IsRunning Then
-                    Call waifu.Task.RunTo(Game.Player.Character.Position, False)
-                Else
-                    Call waifu.Task.GoTo(Game.Player.Character, offset)
-                End If
+    Public Shared Sub PlayerUnion(script As Waifus, skipAssert As Func(Of Ped, Boolean))
+        For Each waifu As Ped In script.waifuGuards
+            If True = skipAssert(waifu) Then
+                Continue For
+            End If
+
+            Dim offset As Vector3 = script.offsetAroundMe()
+            Dim distance# = Game.Player.Character.Position.DistanceTo(waifu.Position)
+
+            ' If your waifu is too far away with player, then your waifus will running to you
+            ' else walking
+            If distance >= 10 Then
+                Call waifu.Task.RunTo(Game.Player.Character.Position, False)
+            Else
+                Call waifu.Task.GoTo(Game.Player.Character, offset)
             End If
         Next
     End Sub
