@@ -1,5 +1,8 @@
 # GTA5 WaifuGuards
 
+This GTAV game mod is an open source project, where you can download this project source code from:
+> https://github.com/amethyst-asuka/GTA5-WaifuGuards
+
 ![](./screenshots/20180924225127_1.jpg)
 > Anime girls as your body guards in GTA5 game
 
@@ -88,8 +91,8 @@ Shared ReadOnly favoriteWeapons As WeaponHash() = {
 
 BILIBILI videos:
 
++ ****: 
 + **GTA5打了这个mod已经不能正常游戏了**: https://www.bilibili.com/video/av31372451?t=164
-+ 
 
 ## Credits
 
