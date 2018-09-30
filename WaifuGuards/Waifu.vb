@@ -8,7 +8,7 @@ Public Class Waifus : Inherits Script
     ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
 
-    Shared ReadOnly defaultWeapons As WeaponHash() = {
+    Shared ReadOnly favoriteWeapons As WeaponHash() = {
         WeaponHash.HeavySniper,
         WeaponHash.Railgun,
         WeaponHash.MicroSMG,
@@ -28,7 +28,7 @@ Public Class Waifus : Inherits Script
     Private Sub spawnWaifu(name As String)
         Dim pos = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
         Dim waifu As Ped = World.CreatePed(New Model(name), pos)
-        Dim randWeapon As WeaponHash = defaultWeapons(rand.Next(defaultWeapons.Length))
+        Dim randWeapon As WeaponHash = favoriteWeapons(rand.Next(favoriteWeapons.Length))
 
         waifu.Weapons.Give(randWeapon, 9999, True, True)
         waifu.RelationshipGroup = Game.Player.Character.RelationshipGroup
