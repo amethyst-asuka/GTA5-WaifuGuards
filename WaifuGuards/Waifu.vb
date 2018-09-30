@@ -64,6 +64,10 @@ Public Class Waifus : Inherits Script
                 If Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(waifu) Then
                     Call waifu.Kill()
                 End If
+
+                If waifu.IsInCombatAgainst(Game.Player.Character) Then
+                    Call waifu.Task.ClearAllImmediately()
+                End If
             End If
         Next
     End Sub
