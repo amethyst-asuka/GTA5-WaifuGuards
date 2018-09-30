@@ -2,7 +2,7 @@
 
 Anime girls as your body guards in GTA5 game
 
-![](./docs/screenshots/20180924225144_1.jpg)
+![](./docs/images/cover.png)
 
 ## Install
 
@@ -30,4 +30,3 @@ model3
 
 And then save this text file to the same location of the file ``WaifuGuards.dll`` with file name ``waifus.txt``, in a location like:
 > &lt;GTAV>/scripts/waifus.txt
-![](./docs/images/cover.png)
