@@ -14,7 +14,10 @@ Module WaifuList
         "yoshino",
         "beatrice",
         "kanna",
-        "kotori"
+        "kotori",
+        "22",
+        "33",
+        "sora"
     }
 
     ''' <summary>
