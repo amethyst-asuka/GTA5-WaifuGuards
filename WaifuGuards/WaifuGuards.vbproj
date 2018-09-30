@@ -73,6 +73,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CleanupDeath.vb" />
+    <Compile Include="TickEvent.vb" />
     <Compile Include="WaifuList.vb" />
     <Compile Include="Waifu.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

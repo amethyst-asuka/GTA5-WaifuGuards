@@ -7,11 +7,17 @@ Public Class Waifus : Inherits Script
 
     ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
-    ReadOnly waifuGuards As New List(Of Ped)
+
+    Friend ReadOnly waifuGuards As New List(Of Ped)
+    Friend ReadOnly events As New List(Of TickEvent)
 
     Dim lastCheck As DateTime = Now
 
     Shared ReadOnly twoSecond As New TimeSpan(0, 0, 2)
+
+    Sub New()
+        events.Add(New CleanupDeath)
+    End Sub
 
     Private Sub spawnWaifu(name As String)
         Dim pos = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
