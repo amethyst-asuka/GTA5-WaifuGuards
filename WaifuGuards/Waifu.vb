@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Runtime.CompilerServices
+Imports System.Windows.Forms
 Imports GTA
 Imports GTA.Math
 
@@ -13,8 +14,8 @@ Public Class Waifus : Inherits Script
     Shared ReadOnly twoSecond As New TimeSpan(0, 0, 2)
 
     Private Sub spawnWaifu(name As String)
-        Dim offset As New Vector3(rand.Next(1, 5), 0, rand.Next(1, 5))
-        Dim waifu As Ped = World.CreatePed(New Model(name), Game.Player.Character.GetOffsetInWorldCoords(offset))
+        Dim pos = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
+        Dim waifu As Ped = World.CreatePed(New Model(name), pos)
 
         waifu.Weapons.Give(Native.WeaponHash.SMG, 9999, True, True)
         waifu.RelationshipGroup = Game.Player.Character.RelationshipGroup
@@ -23,6 +24,11 @@ Public Class Waifus : Inherits Script
 
         Call waifuGuards.Add(waifu)
     End Sub
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Private Function offsetAroundMe()
+        Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
+    End Function
 
     ''' <summary>
     ''' Press key ``Y`` for spawn a waifu.
@@ -41,7 +47,7 @@ Public Class Waifus : Inherits Script
                 If waifu.IsDead Then
                     Call waifu.Delete()
                 Else
-                    Dim offset As New Vector3(rand.Next(1, 5), 0, rand.Next(1, 5))
+                    Dim offset As Vector3 = offsetAroundMe()
 
                     ' If the player is running, then your waifus will running to you
                     ' else walking
