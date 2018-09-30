@@ -77,6 +77,10 @@ Public Class Waifus : Inherits Script
         For Each waifu In waifuGuards
             If Not waifu.IsDead Then
                 waifu.Health += 100
+
+                If Game.Player.Character.IsShooting Then
+                    waifu.Task.ShootAt(Game.Player.Character.GetJackTarget)
+                End If
             End If
         Next
     End Sub
