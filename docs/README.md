@@ -13,3 +13,11 @@ For create a ped, the ``World.CreatePed`` function required at least two paramet
 
 ![](./images/peds-name.png)
 > You can using the ``AddonPeds Editor`` for imports your custom player skin as your waifu guards model.
+
+So, if you want spawn a **2016ver Racing Miku**, then you can using the code like:
+
+```vbnet
+Dim miku2016 As Ped = World.CreatePed(New Model("miku2016"), pos)
+```
+
+A miku will but created and positioning to a given location.
