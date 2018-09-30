@@ -38,14 +38,25 @@ Public Class Waifus : Inherits Script
     Private Sub Waifus_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If e.KeyCode = Keys.Y Then
             Call spawnWaifu(names(rand.Next(0, names.Length)))
+        ElseIf e.KeyCode = Keys.NumPad9 Then
+            ' spawn all
+            For Each name As String In names
+                If waifuGuards.Count < 10 Then
+                    ' too many peds will makes GTAV crashed.
+                    Call spawnWaifu(name)
+                Else
+                    Exit For
+                End If
+            Next
         End If
     End Sub
 
     Private Sub Waifus_Tick(sender As Object, e As EventArgs) Handles Me.Tick
         If (Now - lastCheck) >= twoSecond Then
-            For Each waifu In waifuGuards
+            For Each waifu In waifuGuards.ToArray
                 If waifu.IsDead Then
                     Call waifu.Delete()
+                    Call waifuGuards.Remove(waifu)
                 Else
                     Dim offset As Vector3 = offsetAroundMe()
 
@@ -65,7 +76,7 @@ Public Class Waifus : Inherits Script
         ' Keeps alive
         For Each waifu In waifuGuards
             If Not waifu.IsDead Then
-                waifu.Health = 100
+                waifu.Health += 100
             End If
         Next
     End Sub
