@@ -1,6 +1,6 @@
 # GTA5 WaifuGuards
 
-![](./screenshots/20180924225144_1.jpg)
+![](./screenshots/20180924225127_1.jpg)
 > Anime girls as your body guards in GTA5 game
 
 ## How to spawn a Ped
