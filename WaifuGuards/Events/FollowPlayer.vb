@@ -1,5 +1,4 @@
-﻿Imports GTA
-Imports GTA.Math
+﻿Imports GTA.Math
 
 Public Class FollowPlayer : Inherits TickEvent
 

@@ -1,6 +1,4 @@
-﻿Imports WaifuGuards
-
-Public Class CleanupDeath : Inherits TickEvent
+﻿Public Class CleanupDeath : Inherits TickEvent
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 30))
