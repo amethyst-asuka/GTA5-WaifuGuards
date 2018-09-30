@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E5E767C2-933C-484E-82C7-9AB32BB0738B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>WaifuGuards</RootNamespace>
+    <RootNamespace>GTA.WaifuGuards</RootNamespace>
     <AssemblyName>WaifuGuards</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -73,6 +73,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\FollowPlayer.vb" />
+    <Compile Include="Events\CleanupDeath.vb" />
+    <Compile Include="TickEvent.vb" />
     <Compile Include="WaifuList.vb" />
     <Compile Include="Waifu.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

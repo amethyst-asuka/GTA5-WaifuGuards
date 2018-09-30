@@ -1,17 +1,19 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports System.Windows.Forms
-Imports GTA
 Imports GTA.Math
 
 Public Class Waifus : Inherits Script
 
     ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
-    ReadOnly waifuGuards As New List(Of Ped)
 
-    Dim lastCheck As DateTime = Now
+    Friend ReadOnly waifuGuards As New List(Of Ped)
+    Friend ReadOnly events As New List(Of TickEvent)
 
-    Shared ReadOnly twoSecond As New TimeSpan(0, 0, 2)
+    Sub New()
+        events.Add(New CleanupDeath)
+        events.Add(New FollowPlayer)
+    End Sub
 
     Private Sub spawnWaifu(name As String)
         Dim pos = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
@@ -27,7 +29,7 @@ Public Class Waifus : Inherits Script
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Private Function offsetAroundMe()
+    Friend Function offsetAroundMe()
         Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
     End Function
 
@@ -53,31 +55,18 @@ Public Class Waifus : Inherits Script
     End Sub
 
     Private Sub Waifus_Tick(sender As Object, e As EventArgs) Handles Me.Tick
-        If (Now - lastCheck) >= twoSecond Then
-            For Each waifu In waifuGuards.ToArray
-                If waifu.IsDead Then
-                    Call waifu.Delete()
-                    Call waifuGuards.Remove(waifu)
-                Else
-                    Dim offset As Vector3 = offsetAroundMe()
-
-                    ' If the player is running, then your waifus will running to you
-                    ' else walking
-                    If Game.Player.Character.IsRunning Then
-                        Call waifu.Task.RunTo(Game.Player.Character.Position, False)
-                    Else
-                        Call waifu.Task.GoTo(Game.Player.Character, offset)
-                    End If
-                End If
-            Next
-
-            lastCheck = Now
-        End If
+        For Each [event] As TickEvent In events
+            Call [event].Tick(Me)
+        Next
 
         For Each waifu In waifuGuards
             If Not waifu.IsDead Then
                 If Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(waifu) Then
                     Call waifu.Kill()
+                End If
+
+                If waifu.IsInCombatAgainst(Game.Player.Character) Then
+                    Call waifu.Task.ClearAllImmediately()
                 End If
             End If
         Next
