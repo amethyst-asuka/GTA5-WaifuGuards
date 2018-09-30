@@ -1,11 +1,21 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports System.Windows.Forms
 Imports GTA.Math
+Imports GTA.Native
 
 Public Class Waifus : Inherits Script
 
     ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
+
+    Shared ReadOnly defaultWeapons As WeaponHash() = {
+        WeaponHash.HeavySniper,
+        WeaponHash.Railgun,
+        WeaponHash.MicroSMG,
+        WeaponHash.SpecialCarbine,
+        WeaponHash.CombatPDW,
+        WeaponHash.SMG
+    }
 
     Friend ReadOnly waifuGuards As New List(Of Ped)
     Friend ReadOnly events As New List(Of TickEvent)
@@ -18,8 +28,9 @@ Public Class Waifus : Inherits Script
     Private Sub spawnWaifu(name As String)
         Dim pos = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
         Dim waifu As Ped = World.CreatePed(New Model(name), pos)
+        Dim randWeapon As WeaponHash = defaultWeapons(rand.Next(defaultWeapons.Length))
 
-        waifu.Weapons.Give(Native.WeaponHash.SMG, 9999, True, True)
+        waifu.Weapons.Give(randWeapon, 9999, True, True)
         waifu.RelationshipGroup = Game.Player.Character.RelationshipGroup
         waifu.MaxHealth = 10000
         waifu.Armor = 10000
@@ -59,14 +70,10 @@ Public Class Waifus : Inherits Script
             Call [event].Tick(Me)
         Next
 
-        For Each waifu In waifuGuards
+        For Each waifu As Ped In waifuGuards
             If Not waifu.IsDead Then
                 If Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(waifu) Then
                     Call waifu.Kill()
-                End If
-
-                If waifu.IsInCombatAgainst(Game.Player.Character) Then
-                    Call waifu.Task.ClearAllImmediately()
                 End If
             End If
         Next
