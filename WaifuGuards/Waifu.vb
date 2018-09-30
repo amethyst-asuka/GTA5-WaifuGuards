@@ -33,7 +33,7 @@ Public Class Waifus : Inherits Script
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Private Function offsetAroundMe()
+    Friend Function offsetAroundMe()
         Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
     End Function
 
