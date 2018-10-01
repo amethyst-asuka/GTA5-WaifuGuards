@@ -3,13 +3,11 @@
 ''' </summary>
 Public MustInherit Class TickEvent
 
-    Protected timeSpan As TimeSpan
-    Protected lastCheck As Date
     ''' <summary>
     ''' The time interval of the period
     ''' </summary>
-    Dim timeSpan As TimeSpan
-    Dim lastCheck As Date
+    Protected timeSpan As TimeSpan
+    Protected lastCheck As Date
 
     Sub New(length As TimeSpan)
         timeSpan = length
