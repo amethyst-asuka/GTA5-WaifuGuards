@@ -1,5 +1,11 @@
-﻿Public MustInherit Class TickEvent
+﻿''' <summary>
+''' Event happens in periodically
+''' </summary>
+Public MustInherit Class TickEvent
 
+    ''' <summary>
+    ''' The time interval of the period
+    ''' </summary>
     Protected timeSpan As TimeSpan
     Protected lastCheck As Date
 

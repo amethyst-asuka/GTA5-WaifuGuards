@@ -20,16 +20,21 @@ Public Class FollowPlayer : Inherits TickEvent
 
             ' If your waifu is too far away with player, then your waifus will running to you
             ' else walking
-            If waifu.DistanceToPlayer >= 10 Then
+            If waifu.IsInCombat Then
                 Call waifu.TakeAction(
                     Sub(action As Tasks)
                         Call action.ClearAllImmediately()
+                    End Sub)
+            End If
+
+            If waifu.DistanceToPlayer >= 10 Then
+                Call waifu.TakeAction(
+                    Sub(action As Tasks)
                         Call action.RunTo(Game.Player.Character.Position, False)
                     End Sub)
             Else
                 Call waifu.TakeAction(
                     Sub(action As Tasks)
-                        Call action.ClearAllImmediately()
                         Call action.GoTo(Game.Player.Character, offset)
                     End Sub)
             End If

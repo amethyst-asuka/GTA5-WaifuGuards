@@ -26,7 +26,7 @@ Public Class WaifuScript : Inherits Script
             events.Add(New FollowPlayer)
         Else
             ' Given warning message
-            UI.Notify("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
+            ' UI.Notify("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
         End If
     End Sub
 
@@ -108,12 +108,14 @@ Public Class WaifuScript : Inherits Script
 
             ' removes too far away peds for release memory
             If waifu.DistanceToPlayer > 1000 Then
-                Call UI.Notify($"Delete [{waifu.Name}] due to she is too far away from you.")
+                ' Call UI.Notify($"Delete [{waifu.Name}] due to she is too far away from you.")
                 Call waifu.Delete()
             End If
         Next
 
-        Dim actives = pendings.Where(Function(task) task.IsReady).ToArray
+        Dim actives As PendingEvent() = pendings _
+            .Where(Function(task) task.IsReady) _
+            .ToArray
 
         For Each task As PendingEvent In actives
             Call task.Tick(Me)
