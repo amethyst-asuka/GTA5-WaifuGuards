@@ -8,7 +8,7 @@ Public Class WaifuScript : Inherits Script
     ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
 
-    Shared ReadOnly favoriteWeapons As WeaponHash() = {
+    Public Shared ReadOnly favoriteWeapons As WeaponHash() = {
         WeaponHash.HeavySniper,
         WeaponHash.Railgun,
         WeaponHash.MicroSMG,
@@ -18,7 +18,7 @@ Public Class WaifuScript : Inherits Script
     }
 
     Friend ReadOnly waifuGuards As New List(Of Waifu)
-    Friend ReadOnly events As New List(Of TickEvent)
+    Friend ReadOnly events As New List(Of TickEvent(Of WaifuScript))
     Friend ReadOnly pendings As New List(Of PendingEvent)
 
     Sub New()
@@ -49,7 +49,7 @@ Public Class WaifuScript : Inherits Script
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Friend Function offsetAroundMe()
+    Public Function offsetAroundMe()
         Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
     End Function
 
@@ -84,7 +84,7 @@ Public Class WaifuScript : Inherits Script
     End Sub
 
     Private Sub Waifus_Tick(sender As Object, e As EventArgs) Handles Me.Tick
-        For Each [event] As TickEvent In events
+        For Each [event] As TickEvent(Of WaifuScript) In events
             Call [event].Tick(Me)
         Next
 
@@ -95,13 +95,13 @@ Public Class WaifuScript : Inherits Script
                 End If
 
                 ' try to prevent kill each other
-                'For Each partner As Waifu In waifuGuards _
-                '    .Where(Function(ped)
-                '               Return Not ped Is waifu AndAlso Not ped.IsDead
-                '           End Function)
+                For Each partner As Waifu In waifuGuards _
+                    .Where(Function(ped)
+                               Return Not ped Is waifu AndAlso Not ped.IsDead
+                           End Function)
 
-                '    Call waifu.StopAttack(partner)
-                'Next
+                    Call waifu.StopAttack(partner)
+                Next
 
                 Call waifu.StopAttack(Game.Player.Character)
             End If

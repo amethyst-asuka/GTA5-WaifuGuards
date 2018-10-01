@@ -1,7 +1,7 @@
 ﻿''' <summary>
 ''' Event happens in periodically
 ''' </summary>
-Public MustInherit Class TickEvent
+Public MustInherit Class TickEvent(Of TScript As Script)
 
     ''' <summary>
     ''' The time interval of the period
@@ -14,18 +14,18 @@ Public MustInherit Class TickEvent
         lastCheck = Now
     End Sub
 
-    Public Sub Tick(script As WaifuScript)
+    Public Sub Tick(script As TScript)
         If Now - lastCheck >= timeSpan Then
             Call DoEvent(script)
             lastCheck = Now
         End If
     End Sub
 
-    Protected MustOverride Sub DoEvent(script As WaifuScript)
+    Protected MustOverride Sub DoEvent(script As TScript)
 
 End Class
 
-Public Class PendingEvent : Inherits TickEvent
+Public Class PendingEvent : Inherits TickEvent(Of WaifuScript)
 
     ReadOnly action As Action(Of WaifuScript)
 

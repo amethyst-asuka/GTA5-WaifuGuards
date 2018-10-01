@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports GTA.Math
 
-Public Class FollowPlayer : Inherits TickEvent
+Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 1))

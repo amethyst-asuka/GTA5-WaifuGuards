@@ -1,4 +1,4 @@
-﻿Public Class AssistPlayer : Inherits TickEvent
+﻿Public Class AssistPlayer : Inherits TickEvent(Of WaifuScript)
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 1))

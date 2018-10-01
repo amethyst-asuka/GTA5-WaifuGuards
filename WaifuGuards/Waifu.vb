@@ -67,6 +67,10 @@ Public Class Waifu
     Public Sub StopAttack(target As Waifu)
         If obj.IsInCombatAgainst(target.obj) Then
             Call obj.Task.ClearAllImmediately()
+            Call target.obj.Task.ClearAllImmediately()
+
+            Call obj.Task.HandsUp(3)
+            Call target.obj.Task.HandsUp(3)
         End If
     End Sub
 
