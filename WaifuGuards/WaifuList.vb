@@ -4,7 +4,7 @@ Imports System.Windows.Forms
 
 Module WaifuList
 
-    ReadOnly defaultWaifus$() = {
+    ReadOnly waifusMegaPack$() = {
         "ram",
         "rem",
         "rmiku2015",
@@ -14,11 +14,13 @@ Module WaifuList
         "yoshino",
         "beatrice",
         "kanna",
-        "kotori",
+        "kotori"
+    }
+    ReadOnly defaultWaifus$() = waifusMegaPack.Append({
         "22",
         "33",
         "sora"
-    }
+    })
 
     ''' <summary>
     ''' The directory location of the current script dll file.
@@ -45,5 +47,20 @@ Module WaifuList
         Else
             Return defaultWaifus
         End If
+    End Function
+
+    ''' <summary>
+    ''' Check if the ``waifus mega pack`` mod is installed
+    ''' </summary>
+    ''' <returns></returns>
+    ''' 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Function IsWaifusMegaPackInstalled() As Boolean
+        Return waifusMegaPack _
+            .Any(Function(name)
+                     With New Model(name)
+                         Return .IsInCdImage AndAlso .IsValid
+                     End With
+                 End Function)
     End Function
 End Module

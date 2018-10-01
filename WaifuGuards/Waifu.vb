@@ -21,8 +21,13 @@ Public Class Waifus : Inherits Script
     Friend ReadOnly events As New List(Of TickEvent)
 
     Sub New()
-        events.Add(New CleanupDeath)
-        events.Add(New FollowPlayer)
+        If WaifuList.IsWaifusMegaPackInstalled Then
+            events.Add(New CleanupDeath)
+            events.Add(New FollowPlayer)
+        Else
+            ' Given warning message
+            UI.Notify("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
+        End If
     End Sub
 
     Private Sub spawnWaifu(name As String)
