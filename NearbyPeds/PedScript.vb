@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports GTA.Math
 
 Public Class PedScript : Inherits Script
 
@@ -36,10 +37,7 @@ Public Class PedScript : Inherits Script
 
         For Each ped As Ped In nearby
             If Not ped.IsDead Then
-                Dim location = ped.Position
-                ped.Delete()
-                ped = World.CreatePed(NextModel, location)
-                nearbyPeds.Add(ped)
+                Call nearbyPeds.Add(PedChangeModel(ped))
             End If
         Next
 
@@ -49,4 +47,42 @@ Public Class PedScript : Inherits Script
             End If
         Next
     End Sub
+
+    Private Function PedChangeModel(nearbyPed As Ped) As Ped
+        Dim location As Vector3 = nearbyPed.Position
+        Dim ped As Ped = World.CreatePed(NextModel, location)
+
+        With nearbyPed
+            ped.Accuracy = .Accuracy
+            ped.Alpha = .Alpha
+            ped.Armor = .Armor
+            ped.CanFlyThroughWindscreen = .CanFlyThroughWindscreen
+            ped.CanRagdoll = .CanRagdoll
+            ped.CanSufferCriticalHits = .CanSufferCriticalHits
+            ped.CanWrithe = .CanWrithe
+            ped.DropsWeaponsOnDeath = .DropsWeaponsOnDeath
+            ped.FreezePosition = .FreezePosition
+            ped.HasCollision = .HasCollision
+            ped.Heading = .Heading
+            ped.Health = .Health
+            ped.IsBulletProof = .IsBulletProof
+            ped.IsCollisionProof = .IsCollisionProof
+            ped.IsDucking = .IsDucking
+            ped.IsExplosionProof = .IsExplosionProof
+            ped.IsFireProof = .IsFireProof
+            ped.IsInvincible = .IsInvincible
+            ped.IsMeleeProof = .IsMeleeProof
+            ped.IsOnlyDamagedByPlayer = .IsOnlyDamagedByPlayer
+            ped.IsPersistent = .IsPersistent
+            ped.IsVisible = .IsVisible
+            ped.LodDistance = .LodDistance
+            ped.MaxHealth = .MaxHealth
+            ped.Money = .Money
+            ped.RelationshipGroup = .RelationshipGroup
+        End With
+
+        Call nearbyPed.Delete()
+
+        Return ped
+    End Function
 End Class
