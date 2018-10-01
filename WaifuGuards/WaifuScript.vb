@@ -23,7 +23,6 @@ Public Class WaifuScript : Inherits Script
 
     Sub New()
         If WaifuList.IsWaifusMegaPackInstalled Then
-            events.Add(New CleanupDeath)
             events.Add(New FollowPlayer)
         Else
             ' Given warning message
@@ -113,6 +112,13 @@ Public Class WaifuScript : Inherits Script
                 Call UI.Notify($"Delete [{waifu.Name}] due to she is too far away from you.")
                 Call waifu.Delete()
             End If
+        Next
+
+        Dim actives = pendings.Where(Function(task) task.IsReady).ToArray
+
+        For Each task As PendingEvent In actives
+            Call task.Tick(Me)
+            Call pendings.Remove(task)
         Next
     End Sub
 End Class

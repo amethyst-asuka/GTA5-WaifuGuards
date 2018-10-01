@@ -74,7 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\FollowPlayer.vb" />
-    <Compile Include="Events\CleanupDeath.vb" />
     <Compile Include="Waifu.vb" />
     <Compile Include="Utils.vb" />
     <Compile Include="TickEvent.vb" />
