@@ -33,6 +33,12 @@ Public Class Waifu
         End Get
     End Property
 
+    Public ReadOnly Property IsAvailable As Boolean
+        Get
+            Return Not obj.IsDead AndAlso obj.IsInCombat
+        End Get
+    End Property
+
     Sub New(modelName$, host As WaifuScript)
         Dim pos = Game.Player.Character.GetOffsetInWorldCoords(host.offsetAroundMe)
         Dim waifu As Ped = World.CreatePed(New Model(modelName), pos)
