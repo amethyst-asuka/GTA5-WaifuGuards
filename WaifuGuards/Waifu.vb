@@ -33,6 +33,10 @@ Public Class Waifu
         End Get
     End Property
 
+    ''' <summary>
+    ''' Not dead and not in combat
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property IsAvailable As Boolean
         Get
             Return Not obj.IsDead AndAlso obj.IsInCombat

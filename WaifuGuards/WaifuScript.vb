@@ -104,6 +104,15 @@ Public Class WaifuScript : Inherits Script
                 Next
 
                 Call waifu.StopAttack(Game.Player.Character)
+
+                'If waifu.IsAvailable Then
+                '    If Game.Player.Character.IsInMeleeCombat Then
+                '        Call waifu.TakeAction(
+                '            Sub(actions As Tasks)
+
+                '            End Sub)
+                '    End If
+                'End If
             End If
 
             ' removes too far away peds for release memory
