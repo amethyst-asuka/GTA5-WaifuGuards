@@ -1,5 +1,11 @@
-﻿Public MustInherit Class TickEvent
+﻿''' <summary>
+''' Event happens in periodically
+''' </summary>
+Public MustInherit Class TickEvent
 
+    ''' <summary>
+    ''' The time interval of the period
+    ''' </summary>
     Dim timeSpan As TimeSpan
     Dim lastCheck As Date
 
