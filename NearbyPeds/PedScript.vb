@@ -32,7 +32,7 @@ Public Class PedScript : Inherits Script
         Dim nearby As Ped() = World _
             .GetNearbyPeds(Game.Player.Character.Position, distance) _
             .Where(Function(p)
-                       Return p.RelationshipGroup <> player AndAlso nearbyPeds.IndexOf(p) = -1
+                       Return nearbyPeds.IndexOf(p) = -1 AndAlso Not Game.Player.Character Is p
                    End Function)
 
         For Each ped As Ped In nearby
