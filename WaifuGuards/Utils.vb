@@ -1,6 +1,19 @@
-﻿Imports System.Runtime.CompilerServices
+﻿Imports System.IO
+Imports System.Runtime.CompilerServices
+Imports System.Windows.Forms
 
-Module Utils
+Public Module Utils
+
+    ''' <summary>
+    ''' The directory location of the current script dll file.
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property AssemblyLocation As String
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
+        Get
+            Return Path.GetDirectoryName(Application.ExecutablePath) & "/scripts"
+        End Get
+    End Property
 
     <Extension>
     Public Function Append(list As IEnumerable(Of String), add As IEnumerable(Of String)) As String()

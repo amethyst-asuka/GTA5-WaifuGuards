@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports System.Runtime.CompilerServices
-Imports System.Windows.Forms
 
 Module WaifuList
 
@@ -21,17 +20,6 @@ Module WaifuList
         "33",
         "sora"
     })
-
-    ''' <summary>
-    ''' The directory location of the current script dll file.
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property AssemblyLocation As String
-        <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Get
-            Return Path.GetDirectoryName(Application.ExecutablePath) & "/scripts"
-        End Get
-    End Property
 
     ''' <summary>
     ''' You can load custom names from a ``waifus.txt`` file which is located at script dir.

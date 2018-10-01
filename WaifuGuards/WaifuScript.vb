@@ -36,9 +36,10 @@ Public Class WaifuScript : Inherits Script
         Dim randWeapon As WeaponHash = favoriteWeapons(nextHash)
 
         Call waifu.TakeAction(
-            Sub(waifuPed)
+            Sub(waifuPed As Ped)
                 waifuPed.Weapons.Give(randWeapon, 9999, True, True)
                 waifuPed.RelationshipGroup = Game.Player.Character.RelationshipGroup
+                waifuPed.NeverLeavesGroup = True
                 waifuPed.MaxHealth = 10000
                 waifuPed.Armor = 10000
                 waifuPed.IsInvincible = True
@@ -96,9 +97,7 @@ Public Class WaifuScript : Inherits Script
                 ' try to prevent kill each other
                 For Each partner As Waifu In waifuGuards _
                     .Where(Function(ped)
-                               Return Not ped Is waifu AndAlso
-                                      Not ped.IsInCombat AndAlso
-                                      Not ped.IsDead
+                               Return Not ped Is waifu AndAlso Not ped.IsDead
                            End Function)
 
                     Call waifu.StopAttack(partner)
