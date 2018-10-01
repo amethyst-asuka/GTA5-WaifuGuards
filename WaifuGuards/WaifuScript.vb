@@ -17,8 +17,9 @@ Public Class WaifuScript : Inherits Script
         WeaponHash.SMG
     }
 
-    Friend ReadOnly waifuGuards As New List(Of Ped)
+    Friend ReadOnly waifuGuards As New List(Of Waifu)
     Friend ReadOnly events As New List(Of TickEvent)
+    Friend ReadOnly pendings As New List(Of PendingEvent)
 
     Sub New()
         If WaifuList.IsWaifusMegaPackInstalled Then
@@ -31,15 +32,18 @@ Public Class WaifuScript : Inherits Script
     End Sub
 
     Private Sub spawnWaifu(name As String)
-        Dim pos = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
-        Dim waifu As Ped = World.CreatePed(New Model(name), pos)
-        Dim randWeapon As WeaponHash = favoriteWeapons(rand.Next(favoriteWeapons.Length))
+        Dim waifu As New Waifu(name, Me)
+        Dim nextHash = rand.Next(favoriteWeapons.Length)
+        Dim randWeapon As WeaponHash = favoriteWeapons(nextHash)
 
-        waifu.Weapons.Give(randWeapon, 9999, True, True)
-        waifu.RelationshipGroup = Game.Player.Character.RelationshipGroup
-        waifu.MaxHealth = 10000
-        waifu.Armor = 10000
-        waifu.IsInvincible = True
+        Call waifu.TakeAction(
+            Sub(waifuPed)
+                waifuPed.Weapons.Give(randWeapon, 9999, True, True)
+                waifuPed.RelationshipGroup = Game.Player.Character.RelationshipGroup
+                waifuPed.MaxHealth = 10000
+                waifuPed.Armor = 10000
+                waifuPed.IsInvincible = True
+            End Sub)
 
         Call waifuGuards.Add(waifu)
     End Sub
@@ -48,6 +52,11 @@ Public Class WaifuScript : Inherits Script
     Friend Function offsetAroundMe()
         Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
     End Function
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Sub Pending(action As PendingEvent)
+        pendings.Add(action)
+    End Sub
 
     ''' <summary>
     ''' Press key ``Y`` for spawn a waifu.
@@ -78,35 +87,30 @@ Public Class WaifuScript : Inherits Script
             Call [event].Tick(Me)
         Next
 
-        For Each waifu As Ped In waifuGuards.ToArray
+        For Each waifu As Waifu In waifuGuards.ToArray
             If Not waifu.IsDead Then
-                If Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(waifu) Then
+                If waifu.IsShootByPlayer Then
                     Call waifu.Kill()
                 End If
 
                 ' try to prevent kill each other
-                For Each partner As Ped In waifuGuards _
+                For Each partner As Waifu In waifuGuards _
                     .Where(Function(ped)
-                               Return Not ped Is waifu AndAlso Not ped.IsInCombat AndAlso Not ped.IsDead
+                               Return Not ped Is waifu AndAlso
+                                      Not ped.IsInCombat AndAlso
+                                      Not ped.IsDead
                            End Function)
 
-                    If waifu.IsInCombatAgainst(partner) Then
-                        Call waifu.Task.ClearAllImmediately()
-                    End If
+                    Call waifu.StopAttack(partner)
                 Next
 
-                If waifu.IsInCombatAgainst(Game.Player.Character) Then
-                    Call waifu.Task.ClearAllImmediately()
-                End If
+                Call waifu.StopAttack(Game.Player.Character)
             End If
 
-            Dim distance# = Game.Player.Character.Position.DistanceTo(waifu.Position)
-
             ' removes too far away peds for release memory
-            If distance > 1000 Then
-                Call UI.Notify(waifu.Mode)
+            If waifu.DistanceToPlayer > 1000 Then
+                Call UI.Notify($"Delete [{waifu.Name}] due to she is too far away from you.")
                 Call waifu.Delete()
-                Call waifuGuards.Remove(waifu)
             End If
         Next
     End Sub
