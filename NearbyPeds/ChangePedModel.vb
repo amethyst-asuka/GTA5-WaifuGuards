@@ -34,7 +34,7 @@ Public Class ChangePedModel : Inherits TickEvent(Of PedScript)
 
     Private Function PedChangeModel(nearbyPed As Ped, script As PedScript) As Ped
         Dim location As Vector3 = nearbyPed.Position
-        Dim ped As Ped = World.CreatePed(script.NextModel, location)
+        Dim ped As Ped = World.CreatePed(script.NextModel.model, location)
 
         With nearbyPed
             ped.Accuracy = .Accuracy

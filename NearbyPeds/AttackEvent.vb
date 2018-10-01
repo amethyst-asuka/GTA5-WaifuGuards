@@ -19,14 +19,16 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     Protected Overrides Sub DoEvent(script As PedScript)
         If script.ToggleAttacks Then
-            Dim model As Model = script.NextModel
+            Dim model = script.NextModel
             Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
-            Dim ped As Ped = World.CreatePed(model, position)
+            Dim ped As Ped = World.CreatePed(model.model, position)
             Dim weapon As WeaponHash = WeaponHash.Hatchet
 
             Call ped.Weapons.Give(weapon, 9999, True, True)
             Call ped.Task.FightAgainst(Game.Player.Character)
             Call peds.Add(ped)
+
+            Call UI.ShowSubtitle($"'{model.name}' incomming!")
         End If
 
         If plus10 Then
