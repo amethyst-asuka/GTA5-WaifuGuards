@@ -1,4 +1,5 @@
-﻿Imports GTA.Math
+﻿Imports System.Runtime.CompilerServices
+Imports GTA.Math
 
 Public Class FollowPlayer : Inherits TickEvent
 
@@ -6,6 +7,7 @@ Public Class FollowPlayer : Inherits TickEvent
         MyBase.New(New TimeSpan(0, 0, 1))
     End Sub
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Protected Overrides Sub DoEvent(script As WaifuScript)
         Call PlayerUnion(script, skipAssert:=Function(waifu) waifu.IsDead OrElse waifu.IsInCombat)
     End Sub
