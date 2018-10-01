@@ -96,9 +96,7 @@ Public Class WaifuScript : Inherits Script
                 ' try to prevent kill each other
                 For Each partner As Waifu In waifuGuards _
                     .Where(Function(ped)
-                               Return Not ped Is waifu AndAlso
-                                      Not ped.IsInCombat AndAlso
-                                      Not ped.IsDead
+                               Return Not ped Is waifu AndAlso Not ped.IsDead
                            End Function)
 
                     Call waifu.StopAttack(partner)
