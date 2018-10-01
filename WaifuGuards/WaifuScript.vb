@@ -78,6 +78,7 @@ Public Class WaifuScript : Inherits Script
             Next
         ElseIf e.KeyCode = Keys.U Then
             ' union all your waifus
+            ' force waifu stop current task and guard player immediately
             Call FollowPlayer.PlayerUnion(Me, Function() False)
         End If
     End Sub

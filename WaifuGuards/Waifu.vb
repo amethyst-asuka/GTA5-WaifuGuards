@@ -47,6 +47,11 @@ Public Class Waifu
         Call action(obj)
     End Sub
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Sub TakeAction(action As Action(Of Tasks))
+        Call action(obj.Task)
+    End Sub
+
     Public Sub StopAttack(target As Ped)
         If obj.IsInCombatAgainst(target) Then
             Call obj.Task.ClearAllImmediately()
