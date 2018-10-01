@@ -6,11 +6,11 @@ Public Class FollowPlayer : Inherits TickEvent
         MyBase.New(New TimeSpan(0, 0, 1))
     End Sub
 
-    Protected Overrides Sub DoEvent(script As Waifus)
+    Protected Overrides Sub DoEvent(script As WaifuScript)
         Call PlayerUnion(script, skipAssert:=Function(waifu) waifu.IsDead OrElse waifu.IsInCombat)
     End Sub
 
-    Public Shared Sub PlayerUnion(script As Waifus, skipAssert As Func(Of Ped, Boolean))
+    Public Shared Sub PlayerUnion(script As WaifuScript, skipAssert As Func(Of Ped, Boolean))
         For Each waifu As Ped In script.waifuGuards
             If True = skipAssert(waifu) Then
                 Continue For

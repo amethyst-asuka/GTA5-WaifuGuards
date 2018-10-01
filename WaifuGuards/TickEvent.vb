@@ -8,13 +8,13 @@
         lastCheck = Now
     End Sub
 
-    Public Sub Tick(script As Waifus)
+    Public Sub Tick(script As WaifuScript)
         If Now - lastCheck >= timeSpan Then
             Call DoEvent(script)
             lastCheck = Now
         End If
     End Sub
 
-    Protected MustOverride Sub DoEvent(script As Waifus)
+    Protected MustOverride Sub DoEvent(script As WaifuScript)
 
 End Class

@@ -3,7 +3,7 @@ Imports System.Windows.Forms
 Imports GTA.Math
 Imports GTA.Native
 
-Public Class Waifus : Inherits Script
+Public Class WaifuScript : Inherits Script
 
     ReadOnly names$() = WaifuList.LoadNames
     ReadOnly rand As New Random
@@ -104,6 +104,7 @@ Public Class Waifus : Inherits Script
 
             ' removes too far away peds for release memory
             If distance > 1000 Then
+                Call UI.Notify(waifu.Mode)
                 Call waifu.Delete()
                 Call waifuGuards.Remove(waifu)
             End If

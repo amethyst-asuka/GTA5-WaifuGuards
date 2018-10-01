@@ -4,7 +4,7 @@
         MyBase.New(New TimeSpan(0, 0, 30))
     End Sub
 
-    Protected Overrides Sub DoEvent(script As Waifus)
+    Protected Overrides Sub DoEvent(script As WaifuScript)
         For Each waifu In script.waifuGuards.ToArray
             If waifu.IsDead Then
                 Call waifu.Delete()

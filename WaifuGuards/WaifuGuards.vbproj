@@ -78,7 +78,7 @@
     <Compile Include="Utils.vb" />
     <Compile Include="TickEvent.vb" />
     <Compile Include="WaifuList.vb" />
-    <Compile Include="Waifu.vb" />
+    <Compile Include="WaifuScript.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
