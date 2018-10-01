@@ -14,7 +14,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-500, 500), rand.Next(-500, 500), 0)
+        Return New Vector3(rand.Next(-300, 300), rand.Next(-300, 300), 0)
     End Function
 
     Protected Overrides Sub DoEvent(script As PedScript)
