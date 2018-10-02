@@ -122,7 +122,7 @@ Public Class WaifuScript : Inherits Script
                     Call minDistanceWaifu.TakeAction(
                         Sub(actions As Tasks)
                             Call actions.ClearAllImmediately()
-                            Call actions.EnterVehicle(vehicle, VehicleSeat.Any)
+                            Call actions.EnterVehicle(vehicle, VehicleSeat.Passenger)
                         End Sub)
                 End If
             End If

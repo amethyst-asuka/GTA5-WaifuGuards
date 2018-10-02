@@ -13,7 +13,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Const SpawnRadius% = 60
 
     Public Sub New()
-        MyBase.New(New TimeSpan(0, 0, 10))
+        MyBase.New(New TimeSpan(0, 0, 5))
 
 #If DEBUG Then
         ' Call Add("ByStaxx", New Model("ByStaxx"))
@@ -52,7 +52,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
         If modelName = "ByStaxx" Then
             Call explodeds.Add(ped)
-            Call UI.ShowSubtitle($"Warning: >>> {modelName} <<< incomming! ({peds.Count}/{MaxAttacks})")
+            Call UI.ShowSubtitle($"Warning: [{modelName}] incomming! ({peds.Count}/{MaxAttacks})")
         Else
             Call UI.ShowSubtitle($"[{modelName}] incomming! ({peds.Count}/{MaxAttacks})")
         End If
@@ -69,7 +69,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             For Each dead As Ped In peds.Where(Function(p) p.IsDead).ToArray
                 If explodeds.IndexOf(dead) > -1 Then
                     explodeds.Remove(dead)
-                    World.AddExplosion(dead.Position, ExplosionType.GasTank, 150, 5000)
+                    World.AddExplosion(dead.Position, ExplosionType.GasTank, 30, 20)
                 End If
 
                 Call peds.Remove(dead)
@@ -89,7 +89,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
                     Call ped.Kill()
                 ElseIf distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
                     Call ped.Kill()
-                    Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 150, 5000)
+                    Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 20)
                     Call peds.Remove(ped)
                     Call explodeds.Remove(ped)
                     Call ped.Delete()
