@@ -35,6 +35,7 @@ Public Class WaifuScript : Inherits Script
         End If
 
         guards.SeparationRange = 1000
+        guards.Add(Game.Player.Character, leader:=True)
     End Sub
 
     Private Sub spawnWaifu(name As String)
@@ -132,7 +133,7 @@ Public Class WaifuScript : Inherits Script
                         End Sub)
                 End If
 
-                Call waifu.StopAttack(Game.Player.Character)
+                ' Call waifu.StopAttack(Game.Player.Character)
 
                 ' removes too far away peds for release memory
                 Dim distance# = waifu.DistanceToPlayer
