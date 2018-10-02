@@ -31,7 +31,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
                 Call UI.ShowSubtitle($"Missing model [{model.name}]...")
                 Return
             Else
-                Call UI.ShowSubtitle($"[{model.name}] incomming! ({peds.Count}/{MaxAttacks})")
+                Call UI.ShowSubtitle($"[{model.name}] incomming! ({peds.Count + 1}/{MaxAttacks})")
             End If
 
             Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)

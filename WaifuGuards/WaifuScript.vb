@@ -20,6 +20,7 @@ Public Class WaifuScript : Inherits Script
     Friend ReadOnly waifuGuards As New List(Of Waifu)
     Friend ReadOnly events As New List(Of TickEvent(Of WaifuScript))
     Friend ReadOnly pendings As New List(Of PendingEvent)
+    Friend ReadOnly guards As New PedGroup
 
     Dim toggleKillable As Boolean = False
 
@@ -32,6 +33,8 @@ Public Class WaifuScript : Inherits Script
             ' Given warning message
             UI.ShowSubtitle("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
         End If
+
+        guards.SeparationRange = 1000
     End Sub
 
     Private Sub spawnWaifu(name As String)
@@ -49,6 +52,8 @@ Public Class WaifuScript : Inherits Script
                     waifuPed.IsInvincible = True
                     waifuPed.AddBlip()
 
+                    Call guards.Add(waifuPed, leader:=False)
+
                     With waifuPed.CurrentBlip
                         .Scale = 0.7!
                         .Name = "Waifu"
@@ -56,7 +61,7 @@ Public Class WaifuScript : Inherits Script
                     End With
 
                     ' TASK_COMBAT_HATED_TARGETS_IN_AREA
-                    Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+                    ' Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
                 End Sub)
 
             Call waifuGuards.Add(waifu)

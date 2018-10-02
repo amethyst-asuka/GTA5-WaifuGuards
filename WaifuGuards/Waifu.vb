@@ -75,14 +75,14 @@ Public Class Waifu
     End Function
 
     Public Sub StopAttack()
-        Call obj.Task.ClearAllImmediately()
-        Call obj.Task.HandsUp(3)
+        Call obj.Task.ClearAll()
+        Call obj.Task.HandsUp(3000)
     End Sub
 
     Public Sub StopAttack(target As Ped)
         If obj.IsInCombatAgainst(target) Then
             Call obj.Task.ClearAllImmediately()
-            Call obj.Task.AimAt(target, 1)
+            ' Call obj.Task.AimAt(target, 1)
         End If
     End Sub
 
@@ -90,15 +90,7 @@ Public Class Waifu
     ''' Kill this waifu and pending to delete after 30 seconds
     ''' </summary>
     Public Sub Kill()
-        Dim task As New PendingEvent(
-            New TimeSpan(0, 0, 30),
-            Sub(script)
-                Call obj.Delete()
-
-                SyncLock script.waifuGuards
-                    Call script.waifuGuards.Remove(Me)
-                End SyncLock
-            End Sub)
+        Dim task As New PendingEvent(New TimeSpan(0, 0, 30), AddressOf Delete)
 
         Call obj.Kill()
         Call script.Pending(task)
@@ -107,8 +99,9 @@ Public Class Waifu
     End Sub
 
     Public Sub Delete()
-        Call obj.Delete()
         Call script.waifuGuards.Remove(Me)
+        Call script.guards.Remove(obj)
+        Call obj.Delete()
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
