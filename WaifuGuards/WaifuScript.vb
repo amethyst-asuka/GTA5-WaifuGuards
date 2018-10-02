@@ -123,15 +123,13 @@ Public Class WaifuScript : Inherits Script
                     ' means an internal war in this guard group
                     ' stop it
                     If nearby Is Nothing AndAlso Not waifu.IsAvailable Then
-                        Call waifu.StopAttack()
-                        Call UI.ShowSubtitle("a")
+                        ' Call waifu.StopAttack()
                     End If
                 ElseIf Not nearby Is Nothing AndAlso waifu.IsAvailable Then
                     Call waifu.TakeAction(
                         Sub(actions As Tasks)
                             Call actions.FightAgainst(nearby)
                         End Sub)
-                    Call UI.ShowSubtitle("b")
                 End If
 
                 Call waifu.StopAttack(Game.Player.Character)

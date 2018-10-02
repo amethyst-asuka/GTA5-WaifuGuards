@@ -13,10 +13,8 @@ Public Class PedScript : Inherits Script
         "LuzuGames",
         "perxittaa",
         "Tigre",
-        "Waluigi",
-        "Luigi_MTUS",
-        "Mario_MTUS",
-        "BabyLuigi",
+        "Waluigi",       '"Luigi_MTUS",
+        "Mario_MTUS",        '"BabyLuigi",
         "BabyMario",
         "Wario"
     }
