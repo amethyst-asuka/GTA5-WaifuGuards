@@ -20,7 +20,7 @@ Public Class WaifuScript : Inherits Script
     Friend ReadOnly waifuGuards As New List(Of Waifu)
     Friend ReadOnly events As New List(Of TickEvent(Of WaifuScript))
     Friend ReadOnly pendings As New List(Of PendingEvent)
-    Friend ReadOnly guards As New PedGroup
+    ' Friend ReadOnly guards As New PedGroup
 
     Dim toggleKillable As Boolean = False
 
@@ -34,8 +34,8 @@ Public Class WaifuScript : Inherits Script
             UI.ShowSubtitle("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
         End If
 
-        guards.SeparationRange = 1000
-        guards.Add(Game.Player.Character, leader:=True)
+        ' guards.SeparationRange = 1000
+        ' guards.Add(Game.Player.Character, leader:=True)
     End Sub
 
     Private Sub spawnWaifu(name As String)
@@ -53,7 +53,7 @@ Public Class WaifuScript : Inherits Script
                     waifuPed.IsInvincible = True
                     waifuPed.AddBlip()
 
-                    Call guards.Add(waifuPed, leader:=False)
+                    ' Call guards.Add(waifuPed, leader:=False)
 
                     With waifuPed.CurrentBlip
                         .Scale = 0.7!
@@ -61,8 +61,14 @@ Public Class WaifuScript : Inherits Script
                         .Color = BlipColor.Blue
                     End With
 
-                    ' TASK_COMBAT_HATED_TARGETS_IN_AREA
-                    ' Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+                    Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
+                    Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
+                    Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
+
+                    Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
+                    Call waifuPed.Task.ClearAllImmediately()
+                    Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+                    Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
                 End Sub)
 
             Call waifuGuards.Add(waifu)

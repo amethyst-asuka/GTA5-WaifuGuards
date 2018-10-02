@@ -100,7 +100,7 @@ Public Class Waifu
 
     Public Sub Delete()
         Call script.waifuGuards.Remove(Me)
-        Call script.guards.Remove(obj)
+        ' Call script.guards.Remove(obj)
         Call obj.Delete()
     End Sub
 
