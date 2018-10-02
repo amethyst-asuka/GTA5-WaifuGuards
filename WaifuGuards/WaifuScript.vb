@@ -14,12 +14,15 @@ Public Class WaifuScript : Inherits Script
         WeaponHash.MicroSMG,
         WeaponHash.SpecialCarbine,
         WeaponHash.CombatPDW,
-        WeaponHash.SMG
+        WeaponHash.SMG,
+        WeaponHash.Minigun
     }
 
     Friend ReadOnly waifuGuards As New List(Of Waifu)
     Friend ReadOnly events As New List(Of TickEvent(Of WaifuScript))
     Friend ReadOnly pendings As New List(Of PendingEvent)
+
+    Dim toggleKillable As Boolean = False
 
     Sub New()
         If WaifuList.IsWaifusMegaPackInstalled Then
@@ -37,13 +40,12 @@ Public Class WaifuScript : Inherits Script
 
         Call waifu.TakeAction(
             Sub(waifuPed As Ped)
-                waifuPed.Weapons.Give(randWeapon, 9999, True, True)
+                waifuPed.Weapons.Give(randWeapon, 99999, True, True)
                 waifuPed.RelationshipGroup = Game.Player.Character.RelationshipGroup
                 waifuPed.NeverLeavesGroup = True
                 waifuPed.MaxHealth = 10000
                 waifuPed.Armor = 10000
                 waifuPed.IsInvincible = True
-                waifuPed.AlwaysKeepTask = True
                 waifuPed.AddBlip()
 
                 With waifuPed.CurrentBlip
@@ -91,6 +93,8 @@ Public Class WaifuScript : Inherits Script
             ' union all your waifus
             ' force waifu stop current task and guard player immediately
             Call FollowPlayer.PlayerUnion(Me, Function() False)
+        ElseIf e.KeyCode = Keys.Delete Then
+            toggleKillable = Not toggleKillable
         End If
     End Sub
 
@@ -101,7 +105,7 @@ Public Class WaifuScript : Inherits Script
 
         ' find out a engaged ped nearby the player
         Dim nearby As Ped = World _
-           .GetNearbyPeds(Game.Player.Character.Position, 30) _
+           .GetNearbyPeds(Game.Player.Character.Position, 50) _
            .Where(Function(p)
                       Dim isPlayer As Boolean = Game.Player.Character Is p
                       Dim isWaifu As Boolean = waifuGuards.Any(Function(waifu) waifu = p)
@@ -111,7 +115,7 @@ Public Class WaifuScript : Inherits Script
 
         For Each waifu As Waifu In waifuGuards.ToArray
             If Not waifu.IsDead Then
-                If waifu.IsShootByPlayer Then
+                If waifu.IsShootByPlayer AndAlso toggleKillable Then
                     Call waifu.Kill()
                 ElseIf nearby Is Nothing Then
                     ' try to prevent kill each other
@@ -120,12 +124,14 @@ Public Class WaifuScript : Inherits Script
                     ' stop it
                     If nearby Is Nothing AndAlso Not waifu.IsAvailable Then
                         Call waifu.StopAttack()
+                        Call UI.ShowSubtitle("a")
                     End If
                 ElseIf Not nearby Is Nothing AndAlso waifu.IsAvailable Then
                     Call waifu.TakeAction(
                         Sub(actions As Tasks)
                             Call actions.FightAgainst(nearby)
                         End Sub)
+                    Call UI.ShowSubtitle("b")
                 End If
 
                 Call waifu.StopAttack(Game.Player.Character)
