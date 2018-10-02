@@ -43,15 +43,13 @@ Public Class WaifuScript : Inherits Script
                 waifuPed.MaxHealth = 10000
                 waifuPed.Armor = 10000
                 waifuPed.IsInvincible = True
+                waifuPed.AddBlip()
 
-                Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
-                Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
-                Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
-
-                Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
-                Call waifuPed.Task.ClearAllImmediately()
-                Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
-                Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
+                With waifuPed.CurrentBlip
+                    .Scale = 0.7!
+                    .Name = "Waifu"
+                    .Color = BlipColor.Blue
+                End With
             End Sub)
 
         Call waifuGuards.Add(waifu)
@@ -59,7 +57,7 @@ Public Class WaifuScript : Inherits Script
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
+        Return New Vector3(rand.Next(-15, 15), rand.Next(-15, 15), 0)
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -78,7 +76,7 @@ Public Class WaifuScript : Inherits Script
         ElseIf e.KeyCode = Keys.NumPad9 Then
             ' spawn all
             For Each name As String In names
-                If waifuGuards.Count < 10 Then
+                If waifuGuards.Count < 15 Then
                     ' too many peds will makes GTAV crashed.
                     Call spawnWaifu(name)
                 Else
@@ -94,7 +92,7 @@ Public Class WaifuScript : Inherits Script
 
     Private Sub Waifus_Tick(sender As Object, e As EventArgs) Handles Me.Tick
         For Each [event] As TickEvent(Of WaifuScript) In events
-            ' Call [event].Tick(Me)
+            Call [event].Tick(Me)
         Next
 
         For Each waifu As Waifu In waifuGuards.ToArray
@@ -104,15 +102,15 @@ Public Class WaifuScript : Inherits Script
                 End If
 
                 ' try to prevent kill each other
-                'For Each partner As Waifu In waifuGuards _
-                '    .Where(Function(ped)
-                '               Return Not ped Is waifu AndAlso Not ped.IsDead
-                '           End Function)
+                For Each partner As Waifu In waifuGuards _
+                    .Where(Function(ped)
+                               Return Not ped Is waifu AndAlso Not ped.IsDead
+                           End Function)
 
-                '    Call waifu.StopAttack(partner)
-                'Next
+                    Call waifu.StopAttack(partner)
+                Next
 
-                ' Call waifu.StopAttack(Game.Player.Character)
+                Call waifu.StopAttack(Game.Player.Character)
 
                 'If waifu.IsAvailable Then
                 '    If Game.Player.Character.IsInMeleeCombat Then

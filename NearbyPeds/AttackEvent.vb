@@ -28,6 +28,14 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             Call ped.Task.FightAgainst(Game.Player.Character)
             Call peds.Add(ped)
 
+            ped.AddBlip()
+
+            With ped.CurrentBlip
+                .Scale = 0.7!
+                .Name = "Incomming Attack!"
+                .Color = BlipColor.Green
+            End With
+
             Call UI.ShowSubtitle($"[{model.name}] incomming!")
         End If
 
