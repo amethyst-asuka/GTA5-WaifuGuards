@@ -5,7 +5,7 @@
     End Sub
 
     Protected Overrides Sub DoEvent(script As WaifuScript)
-        If Game.Player.Character.IsInCombat AndAlso Game.Player.IsTargettingAnything Then
+        If Game.Player.IsTargettingAnything Then
             Dim target As Entity = Game.Player.GetTargetedEntity
 
             ' Only shoot at ped
@@ -16,7 +16,6 @@
             For Each waifu As Waifu In script.waifuGuards.Where(Function(w) w.IsAvailable)
                 Call waifu.TakeAction(
                     Sub(actions As Tasks)
-                        Call actions.ClearAllImmediately()
                         Call actions.ShootAt(target)
                     End Sub)
             Next

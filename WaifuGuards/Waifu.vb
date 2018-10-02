@@ -64,6 +64,10 @@ Public Class Waifu
         Call action(obj.Task)
     End Sub
 
+    Public Function IsFightAgainst(partner As Waifu) As Boolean
+        Return obj.IsInCombatAgainst(partner.obj)
+    End Function
+
     Public Sub StopAttack()
         Call obj.Task.ClearAllImmediately()
         Call obj.Task.HandsUp(3)
@@ -72,6 +76,7 @@ Public Class Waifu
     Public Sub StopAttack(target As Ped)
         If obj.IsInCombatAgainst(target) Then
             Call obj.Task.ClearAllImmediately()
+            Call obj.Task.AimAt(target, 1)
         End If
     End Sub
 
@@ -83,7 +88,10 @@ Public Class Waifu
             New TimeSpan(0, 0, 30),
             Sub(script)
                 Call obj.Delete()
-                Call script.waifuGuards.Remove(Me)
+
+                SyncLock script.waifuGuards
+                    Call script.waifuGuards.Remove(Me)
+                End SyncLock
             End Sub)
 
         Call obj.Kill()
@@ -99,7 +107,7 @@ Public Class Waifu
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Operator =(waifu As Waifu, ped As Ped) As Boolean
-        Return waifu.obj Is ped OrElse waifu.obj.Handle = ped.Handle
+        Return waifu.obj Is ped
     End Operator
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>

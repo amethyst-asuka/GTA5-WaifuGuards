@@ -14,8 +14,7 @@ Public Class WaifuScript : Inherits Script
         WeaponHash.MicroSMG,
         WeaponHash.SpecialCarbine,
         WeaponHash.CombatPDW,
-        WeaponHash.SMG,
-        WeaponHash.Minigun
+        WeaponHash.SMG
     }
 
     Friend ReadOnly waifuGuards As New List(Of Waifu)
@@ -26,7 +25,9 @@ Public Class WaifuScript : Inherits Script
 
     Sub New()
         If WaifuList.IsWaifusMegaPackInstalled Then
-            events.Add(New FollowPlayer)
+            Call events.Add(New FollowPlayer)
+            Call events.Add(New AssistPlayer)
+            Call events.Add(New StopAttackPartner)
         Else
             ' Given warning message
             UI.ShowSubtitle("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
@@ -42,9 +43,6 @@ Public Class WaifuScript : Inherits Script
             Sub(waifuPed As Ped)
                 waifuPed.Weapons.Give(randWeapon, 99999, True, True)
                 waifuPed.RelationshipGroup = Game.Player.Character.RelationshipGroup
-                waifuPed.NeverLeavesGroup = True
-                waifuPed.MaxHealth = 10000
-                waifuPed.Armor = 10000
                 waifuPed.IsInvincible = True
                 waifuPed.AddBlip()
 
@@ -105,7 +103,7 @@ Public Class WaifuScript : Inherits Script
 
         ' find out a engaged ped nearby the player
         Dim nearby As Ped = World _
-           .GetNearbyPeds(Game.Player.Character.Position, 30) _
+           .GetNearbyPeds(Game.Player.Character.Position, 50) _
            .Where(Function(p)
                       Dim isPlayer As Boolean = Game.Player.Character Is p
                       Dim isWaifu As Boolean = waifuGuards.Any(Function(waifu) waifu = p)
@@ -117,19 +115,12 @@ Public Class WaifuScript : Inherits Script
             If Not waifu.IsDead Then
                 If waifu.IsShootByPlayer AndAlso toggleKillable Then
                     Call waifu.Kill()
-                ElseIf nearby Is Nothing Then
-                    ' try to prevent kill each other
-                    ' no nearby engaged ped but waifu is incombat
-                    ' means an internal war in this guard group
-                    ' stop it
-                    If Not waifu.IsAvailable Then
-                        ' Call waifu.StopAttack()
-                    End If
+
                 ElseIf Not nearby Is Nothing AndAlso waifu.IsAvailable Then
-                    'Call waifu.TakeAction(
-                    '    Sub(actions As Tasks)
-                    '        Call actions.FightAgainst(nearby)
-                    '    End Sub)
+                    Call waifu.TakeAction(
+                        Sub(actions As Tasks)
+                            Call actions.FightAgainst(nearby)
+                        End Sub)
                 End If
 
                 Call waifu.StopAttack(Game.Player.Character)
@@ -137,7 +128,7 @@ Public Class WaifuScript : Inherits Script
                 ' removes too far away peds for release memory
                 Dim distance# = waifu.DistanceToPlayer
 
-                If distance > 500 Then
+                If distance > 400 Then
                     Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                     Call waifu.Delete()
                 ElseIf distance > 40 Then

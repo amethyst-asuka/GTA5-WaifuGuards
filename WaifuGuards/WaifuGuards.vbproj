@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\AssistPlayer.vb" />
+    <Compile Include="Events\StopAttackPartner.vb" />
     <Compile Include="Events\FollowPlayer.vb" />
     <Compile Include="Waifu.vb" />
     <Compile Include="Utils.vb" />

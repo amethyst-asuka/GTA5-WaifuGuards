@@ -8,11 +8,11 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim peds As New List(Of Ped)
     Dim plus10 As Boolean = False
 
-    Const MaxAttacks% = 10
+    Const MaxAttacks% = 5
     Const SpawnRadius% = 60
 
     Public Sub New()
-        MyBase.New(New TimeSpan(0, 0, 5))
+        MyBase.New(New TimeSpan(0, 0, 10))
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -57,7 +57,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         For Each ped As Ped In peds
             If Not ped.IsInCombat Then
                 Call ped.Task.FightAgainst(Game.Player.Character)
-            ElseIf Game.Player.Character.Position.DistanceTo(ped.Position) >= 300 Then
+            ElseIf Not ped.IsDead AndAlso Game.Player.Character.Position.DistanceTo(ped.Position) >= 200 Then
                 Call ped.Kill()
             End If
         Next
