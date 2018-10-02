@@ -57,6 +57,8 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         For Each ped As Ped In peds
             If Not ped.IsInCombat Then
                 Call ped.Task.FightAgainst(Game.Player.Character)
+            ElseIf Game.Player.Character.Position.DistanceTo(ped.Position) >= 300 Then
+                Call ped.Kill()
             End If
         Next
     End Sub

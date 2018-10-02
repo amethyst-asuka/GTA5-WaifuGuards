@@ -126,10 +126,10 @@ Public Class WaifuScript : Inherits Script
                         ' Call waifu.StopAttack()
                     End If
                 ElseIf Not nearby Is Nothing AndAlso waifu.IsAvailable Then
-                    Call waifu.TakeAction(
-                        Sub(actions As Tasks)
-                            Call actions.FightAgainst(nearby)
-                        End Sub)
+                    'Call waifu.TakeAction(
+                    '    Sub(actions As Tasks)
+                    '        Call actions.FightAgainst(nearby)
+                    '    End Sub)
                 End If
 
                 Call waifu.StopAttack(Game.Player.Character)
@@ -140,7 +140,7 @@ Public Class WaifuScript : Inherits Script
                 If distance > 500 Then
                     Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                     Call waifu.Delete()
-                ElseIf distance > 60 Then
+                ElseIf distance > 40 Then
                     Call waifu.TakeAction(
                         Sub(actions As Tasks)
                             Call actions.ClearAllImmediately()
