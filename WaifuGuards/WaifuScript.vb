@@ -105,7 +105,7 @@ Public Class WaifuScript : Inherits Script
 
         ' find out a engaged ped nearby the player
         Dim nearby As Ped = World _
-           .GetNearbyPeds(Game.Player.Character.Position, 50) _
+           .GetNearbyPeds(Game.Player.Character.Position, 30) _
            .Where(Function(p)
                       Dim isPlayer As Boolean = Game.Player.Character Is p
                       Dim isWaifu As Boolean = waifuGuards.Any(Function(waifu) waifu = p)
@@ -122,7 +122,7 @@ Public Class WaifuScript : Inherits Script
                     ' no nearby engaged ped but waifu is incombat
                     ' means an internal war in this guard group
                     ' stop it
-                    If nearby Is Nothing AndAlso Not waifu.IsAvailable Then
+                    If Not waifu.IsAvailable Then
                         ' Call waifu.StopAttack()
                     End If
                 ElseIf Not nearby Is Nothing AndAlso waifu.IsAvailable Then
@@ -133,12 +133,24 @@ Public Class WaifuScript : Inherits Script
                 End If
 
                 Call waifu.StopAttack(Game.Player.Character)
-            End If
 
-            ' removes too far away peds for release memory
-            If waifu.DistanceToPlayer > 500 Then
-                Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
-                Call waifu.Delete()
+                ' removes too far away peds for release memory
+                Dim distance# = waifu.DistanceToPlayer
+
+                If distance > 500 Then
+                    Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
+                    Call waifu.Delete()
+                ElseIf distance > 60 Then
+                    Call waifu.TakeAction(
+                        Sub(actions As Tasks)
+                            Call actions.ClearAllImmediately()
+                            Call actions.RunTo(Game.Player.Character.Position)
+                        End Sub)
+                End If
+            Else
+                If Not waifu.MarkDeletePending Then
+                    Call waifu.Kill()
+                End If
             End If
         Next
 

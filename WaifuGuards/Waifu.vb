@@ -5,6 +5,8 @@ Public Class Waifu
     ReadOnly obj As Ped
     ReadOnly script As WaifuScript
 
+    Public ReadOnly Property MarkDeletePending As Boolean = False
+
     ''' <summary>
     ''' The model name
     ''' </summary>
@@ -86,6 +88,8 @@ Public Class Waifu
 
         Call obj.Kill()
         Call script.Pending(task)
+
+        _MarkDeletePending = True
     End Sub
 
     Public Sub Delete()
