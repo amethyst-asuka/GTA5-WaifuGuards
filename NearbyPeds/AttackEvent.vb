@@ -22,8 +22,16 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function offsetAroundMe()
-        Dim x = rand.Next(-SpawnRadius, SpawnRadius)
-        Dim y = rand.Next(-SpawnRadius, SpawnRadius)
+        Dim x = rand.Next(SpawnRadius / 2, SpawnRadius)
+        Dim y = rand.Next(SpawnRadius / 2, SpawnRadius)
+
+        ' avoid spawn nearby player
+        If rand.NextDouble > 0.5 Then
+            x = -x
+        End If
+        If rand.NextDouble > 0.5 Then
+            y = -y
+        End If
 
         Return New Vector3(x, y, 0)
     End Function
