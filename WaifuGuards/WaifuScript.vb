@@ -39,24 +39,28 @@ Public Class WaifuScript : Inherits Script
         Dim nextHash = rand.Next(favoriteWeapons.Length)
         Dim randWeapon As WeaponHash = favoriteWeapons(nextHash)
 
-        Call waifu.TakeAction(
-            Sub(waifuPed As Ped)
-                waifuPed.Weapons.Give(randWeapon, 99999, True, True)
-                waifuPed.RelationshipGroup = Game.Player.Character.RelationshipGroup
-                waifuPed.IsInvincible = True
-                waifuPed.AddBlip()
+        If waifu.MarkDeletePending Then
+            UI.ShowSubtitle($"Missing model [{name}]...")
+        Else
+            Call waifu.TakeAction(
+                Sub(waifuPed As Ped)
+                    waifuPed.Weapons.Give(randWeapon, 99999, True, True)
+                    waifuPed.RelationshipGroup = Game.Player.Character.RelationshipGroup
+                    waifuPed.IsInvincible = True
+                    waifuPed.AddBlip()
 
-                With waifuPed.CurrentBlip
-                    .Scale = 0.7!
-                    .Name = "Waifu"
-                    .Color = BlipColor.Blue
-                End With
+                    With waifuPed.CurrentBlip
+                        .Scale = 0.7!
+                        .Name = "Waifu"
+                        .Color = BlipColor.Blue
+                    End With
 
-                ' TASK_COMBAT_HATED_TARGETS_IN_AREA
-                Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
-            End Sub)
+                    ' TASK_COMBAT_HATED_TARGETS_IN_AREA
+                    Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+                End Sub)
 
-        Call waifuGuards.Add(waifu)
+            Call waifuGuards.Add(waifu)
+        End If
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>

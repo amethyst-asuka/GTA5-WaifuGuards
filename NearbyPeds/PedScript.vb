@@ -12,8 +12,7 @@ Public Class PedScript : Inherits Script
         "empollon",
         "LuzuGames",
         "perxittaa",
-        "Tigre",
-        "Mario_MTUS"
+        "Tigre"
     }
     ReadOnly rand As New Random
     ReadOnly player As Integer = Game.Player.Character.RelationshipGroup

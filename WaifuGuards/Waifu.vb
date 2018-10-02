@@ -46,12 +46,18 @@ Public Class Waifu
     End Property
 
     Sub New(modelName$, host As WaifuScript)
-        Dim pos = Game.Player.Character.GetOffsetInWorldCoords(host.offsetAroundMe)
-        Dim waifu As Ped = World.CreatePed(New Model(modelName), pos)
+        Dim model As New Model(modelName)
 
-        Name = modelName
-        obj = waifu
-        script = host
+        If model.IsInCdImage AndAlso model.IsValid Then
+            Dim pos = Game.Player.Character.GetOffsetInWorldCoords(host.offsetAroundMe)
+            Dim waifu As Ped = World.CreatePed(model, pos)
+
+            Name = modelName
+            obj = waifu
+            script = host
+        Else
+            MarkDeletePending = True
+        End If
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
