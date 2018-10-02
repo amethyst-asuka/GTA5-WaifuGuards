@@ -18,7 +18,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     End Function
 
     Protected Overrides Sub DoEvent(script As PedScript)
-        If script.ToggleAttacks Then
+        If script.ToggleAttacks AndAlso peds.Count < 10 Then
             Dim model = script.NextModel
             Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
             Dim ped As Ped = World.CreatePed(model.model, position)
@@ -38,5 +38,11 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         End If
 
         plus10 = Not plus10
+
+        For Each ped As Ped In peds
+            If Not ped.IsInCombat Then
+                Call ped.Task.FightAgainst(Game.Player.Character)
+            End If
+        Next
     End Sub
 End Class
