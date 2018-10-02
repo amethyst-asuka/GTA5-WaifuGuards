@@ -110,6 +110,22 @@ Public Class WaifuScript : Inherits Script
             Call FollowPlayer.PlayerUnion(Me, Function() False)
         ElseIf e.KeyCode = Keys.Delete Then
             toggleKillable = Not toggleKillable
+        ElseIf e.KeyCode = Keys.E Then
+            Dim vehicle = World.GetClosestVehicle(Game.Player.Character.Position, 10)
+
+            If Not vehicle Is Nothing AndAlso Game.Player.Character.IsInVehicle(vehicle) Then
+                Dim minDistanceWaifu = waifuGuards _
+                    .OrderBy(Function(w) w.DistanceToPlayer) _
+                    .FirstOrDefault
+
+                If Not minDistanceWaifu Is Nothing Then
+                    Call minDistanceWaifu.TakeAction(
+                        Sub(actions As Tasks)
+                            Call actions.ClearAllImmediately()
+                            Call actions.EnterVehicle(vehicle, VehicleSeat.Any)
+                        End Sub)
+                End If
+            End If
         End If
     End Sub
 

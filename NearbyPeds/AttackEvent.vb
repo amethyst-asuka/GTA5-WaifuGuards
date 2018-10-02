@@ -16,7 +16,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         MyBase.New(New TimeSpan(0, 0, 10))
 
 #If DEBUG Then
-        Call Add("ByStaxx", New Model("ByStaxx"))
+        ' Call Add("ByStaxx", New Model("ByStaxx"))
 #End If
     End Sub
 
@@ -51,8 +51,8 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         End With
 
         If modelName = "ByStaxx" Then
-            explodeds.Add(ped)
-            Call UI.ShowSubtitle($"Warning: >>> {modelName} <<< incomming! ({peds.Count + 1}/{MaxAttacks})")
+            Call explodeds.Add(ped)
+            Call UI.ShowSubtitle($"Warning: >>> {modelName} <<< incomming! ({peds.Count}/{MaxAttacks})")
         Else
             Call UI.ShowSubtitle($"[{modelName}] incomming! ({peds.Count}/{MaxAttacks})")
         End If
