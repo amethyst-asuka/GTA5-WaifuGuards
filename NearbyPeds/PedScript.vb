@@ -3,17 +3,17 @@ Imports System.Windows.Forms
 
 Public Class PedScript : Inherits Script
 
-    Public Shared ReadOnly Skins$() = {
-        "tonacho",
-        "ByStaxx",
-        "Capitan_america",
-        "DeadPool",
-        "ElRubius",
-        "empollon",
-        "LuzuGames",
-        "perxittaa",
-        "Tigre",
-        "steve"
+    Public Shared ReadOnly Skins As New Dictionary(Of String, String) From {
+        {"tonacho", "Tonacho"},
+        {"ByStaxx", "Creeper"},
+        {"Capitan_america", "Capitan America"},
+        {"DeadPool", "DeadPool"},
+        {"ElRubius", "ElRubius"},
+        {"empollon", "Empollon"},
+        {"LuzuGames", "LuzuGames"},
+        {"perxittaa", "Perxittaa"},
+        {"Tigre", "Tigre"},
+        {"steve", "Steve"}
     }
     ReadOnly rand As New Random
     ReadOnly player As Integer = Game.Player.Character.RelationshipGroup
@@ -24,9 +24,11 @@ Public Class PedScript : Inherits Script
     Public ReadOnly Property NextModel(Optional name$ = Nothing) As (name As String, model As Model)
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
-            With If(name, Skins(rand.Next(0, Skins.Length)))
-                Return (.ToString, New Model(.ToString))
-            End With
+            Dim entry = If(String.IsNullOrEmpty(name),
+                Skins.ElementAt(rand.Next(0, Skins.Count)),
+                New KeyValuePair(Of String, String)(name, Skins(name))
+            )
+            Return (entry.Value, New Model(entry.Key))
         End Get
     End Property
 

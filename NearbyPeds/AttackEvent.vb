@@ -1,7 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports GTA.Math
 Imports GTA.Native
-Imports GTA.WaifuGuards.NearbyPeds
 
 Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
