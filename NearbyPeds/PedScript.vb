@@ -20,11 +20,12 @@ Public Class PedScript : Inherits Script
     Friend nearbyPeds As List(Of Ped)
     Friend events As New List(Of TickEvent(Of PedScript))
 
-    Public ReadOnly Property NextModel As (name As String, model As Model)
+    Public ReadOnly Property NextModel(Optional name$ = Nothing) As (name As String, model As Model)
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
-            Dim name$ = Skins(rand.Next(0, Skins.Length))
-            Return (name, New Model(name))
+            With If(name, Skins(rand.Next(0, Skins.Length)))
+                Return (.ToString, New Model(.ToString))
+            End With
         End Get
     End Property
 

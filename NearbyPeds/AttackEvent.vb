@@ -14,6 +14,10 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 10))
+
+#If DEBUG Then
+        Call Add("ByStaxx", New Model("ByStaxx"))
+#End If
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -24,43 +28,48 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         Return New Vector3(x, y, 0)
     End Function
 
+    Private Sub Add(modelName$, model As Model)
+        If Not (model.IsInCdImage AndAlso model.IsValid) Then
+            Call UI.ShowSubtitle($"Missing model [{modelName}]...")
+            Return
+        End If
+
+        Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
+        Dim ped As Ped = World.CreatePed(model, position)
+        Dim weapon As WeaponHash = WeaponHash.Hatchet
+
+        Call ped.Weapons.Give(weapon, 9999, True, True)
+        Call ped.Task.FightAgainst(Game.Player.Character)
+        Call peds.Add(ped)
+
+        ped.AddBlip()
+
+        With ped.CurrentBlip
+            .Scale = 0.7!
+            .Name = "Incomming Attack!"
+            .Color = BlipColor.Yellow
+        End With
+
+        If modelName = "ByStaxx" Then
+            explodeds.Add(ped)
+            Call UI.ShowSubtitle($"Warning: >>> {modelName} <<< incomming! ({peds.Count + 1}/{MaxAttacks})")
+        Else
+            Call UI.ShowSubtitle($"[{modelName}] incomming! ({peds.Count}/{MaxAttacks})")
+        End If
+    End Sub
+
     Protected Overrides Sub DoEvent(script As PedScript)
         If script.ToggleAttacks AndAlso peds.Count < MaxAttacks Then
-            Dim model = script.NextModel
-
-            If Not (model.model.IsInCdImage AndAlso model.model.IsValid) Then
-                Call UI.ShowSubtitle($"Missing model [{model.name}]...")
-                Return
-            Else
-                Call UI.ShowSubtitle($"[{model.name}] incomming! ({peds.Count + 1}/{MaxAttacks})")
-            End If
-
-            Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
-            Dim ped As Ped = World.CreatePed(model.model, position)
-            Dim weapon As WeaponHash = WeaponHash.Hatchet
-
-            Call ped.Weapons.Give(weapon, 9999, True, True)
-            Call ped.Task.FightAgainst(Game.Player.Character)
-            Call peds.Add(ped)
-
-            ped.AddBlip()
-
-            With ped.CurrentBlip
-                .Scale = 0.7!
-                .Name = "Incomming Attack!"
-                .Color = BlipColor.Yellow
+            With script.NextModel
+                Call Add(.name, .model)
             End With
-
-            If model.name = "ByStaxx" Then
-                explodeds.Add(ped)
-            End If
         End If
 
         If plus10 Then
             For Each dead As Ped In peds.Where(Function(p) p.IsDead).ToArray
                 If explodeds.IndexOf(dead) > -1 Then
                     explodeds.Remove(dead)
-                    World.AddExplosion(dead.Position, ExplosionType.GasCanister, 50, 5)
+                    World.AddExplosion(dead.Position, ExplosionType.GasTank, 150, 5000)
                 End If
 
                 Call peds.Remove(dead)
@@ -80,7 +89,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
                     Call ped.Kill()
                 ElseIf distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
                     Call ped.Kill()
-                    Call World.AddExplosion(ped.Position, ExplosionType.GasCanister, 50, 5)
+                    Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 150, 5000)
                     Call peds.Remove(ped)
                     Call explodeds.Remove(ped)
                     Call ped.Delete()

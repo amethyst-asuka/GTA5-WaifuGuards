@@ -60,9 +60,12 @@
     <DocumentationFile>NearbyPeds.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScriptHookVDotNet2, Version=2.10.7.0, Culture=neutral, processorArchitecture=AMD64">
