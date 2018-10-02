@@ -8,6 +8,8 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim peds As New List(Of Ped)
     Dim plus10 As Boolean = False
 
+    Const MaxAttacks% = 10
+
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 5))
     End Sub
@@ -18,7 +20,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     End Function
 
     Protected Overrides Sub DoEvent(script As PedScript)
-        If script.ToggleAttacks AndAlso peds.Count < 10 Then
+        If script.ToggleAttacks AndAlso peds.Count < MaxAttacks Then
             Dim model = script.NextModel
             Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
             Dim ped As Ped = World.CreatePed(model.model, position)
@@ -36,7 +38,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
                 .Color = BlipColor.Green
             End With
 
-            Call UI.ShowSubtitle($"[{model.name}] incomming!")
+            Call UI.ShowSubtitle($"[{model.name}] incomming! ({peds.Count}/{MaxAttacks})")
         End If
 
         If plus10 Then

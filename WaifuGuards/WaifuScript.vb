@@ -50,6 +50,9 @@ Public Class WaifuScript : Inherits Script
                     .Name = "Waifu"
                     .Color = BlipColor.Blue
                 End With
+
+                ' TASK_COMBAT_HATED_TARGETS_IN_AREA
+                Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
             End Sub)
 
         Call waifuGuards.Add(waifu)
@@ -101,15 +104,6 @@ Public Class WaifuScript : Inherits Script
                     Call waifu.Kill()
                 End If
 
-                ' try to prevent kill each other
-                For Each partner As Waifu In waifuGuards _
-                    .Where(Function(ped)
-                               Return Not ped Is waifu AndAlso Not ped.IsDead
-                           End Function)
-
-                    Call waifu.StopAttack(partner)
-                Next
-
                 Call waifu.StopAttack(Game.Player.Character)
 
                 'If waifu.IsAvailable Then
@@ -124,7 +118,7 @@ Public Class WaifuScript : Inherits Script
 
             ' removes too far away peds for release memory
             If waifu.DistanceToPlayer > 500 Then
-                Call UI.ShowSubtitle($"Delete [{waifu.Name}] due to she is too far away from you.")
+                Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                 Call waifu.Delete()
             End If
         Next
