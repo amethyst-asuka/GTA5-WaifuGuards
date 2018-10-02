@@ -9,6 +9,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim plus10 As Boolean = False
 
     Const MaxAttacks% = 10
+    Const SpawnRadius% = 60
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 5))
@@ -16,7 +17,10 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-200, 200), rand.Next(-200, 200), 0)
+        Dim x = rand.Next(-SpawnRadius, SpawnRadius)
+        Dim y = rand.Next(-SpawnRadius, SpawnRadius)
+
+        Return New Vector3(x, y, 0)
     End Function
 
     Protected Overrides Sub DoEvent(script As PedScript)

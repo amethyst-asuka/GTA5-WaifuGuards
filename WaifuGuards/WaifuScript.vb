@@ -99,22 +99,36 @@ Public Class WaifuScript : Inherits Script
             Call [event].Tick(Me)
         Next
 
+        ' find out a engaged ped nearby the player
+        Dim nearby As Ped = World _
+           .GetNearbyPeds(Game.Player.Character.Position, 30) _
+           .Where(Function(p)
+                      Dim isPlayer As Boolean = Game.Player.Character Is p
+                      Dim isWaifu As Boolean = waifuGuards.Any(Function(waifu) waifu = p)
+                      Return Not isPlayer AndAlso p.IsInCombat AndAlso Not isWaifu
+                  End Function) _
+           .FirstOrDefault
+
         For Each waifu As Waifu In waifuGuards.ToArray
             If Not waifu.IsDead Then
                 If waifu.IsShootByPlayer Then
                     Call waifu.Kill()
+                ElseIf nearby Is Nothing Then
+                    ' try to prevent kill each other
+                    ' no nearby engaged ped but waifu is incombat
+                    ' means an internal war in this guard group
+                    ' stop it
+                    If nearby Is Nothing AndAlso Not waifu.IsAvailable Then
+                        Call waifu.StopAttack()
+                    End If
+                ElseIf Not nearby Is Nothing AndAlso waifu.IsAvailable Then
+                    Call waifu.TakeAction(
+                        Sub(actions As Tasks)
+                            Call actions.FightAgainst(nearby)
+                        End Sub)
                 End If
 
                 Call waifu.StopAttack(Game.Player.Character)
-
-                'If waifu.IsAvailable Then
-                '    If Game.Player.Character.IsInMeleeCombat Then
-                '        Call waifu.TakeAction(
-                '            Sub(actions As Tasks)
-
-                '            End Sub)
-                '    End If
-                'End If
             End If
 
             ' removes too far away peds for release memory
