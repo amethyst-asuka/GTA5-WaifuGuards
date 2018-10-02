@@ -7,6 +7,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim rand As New Random
     Dim peds As New List(Of Ped)
     Dim plus10 As Boolean = False
+    Dim explodeds As New List(Of Ped)
 
     Const MaxAttacks% = 5
     Const SpawnRadius% = 60
@@ -49,12 +50,21 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
                 .Name = "Incomming Attack!"
                 .Color = BlipColor.Yellow
             End With
+
+            If model.name = "ByStaxx" Then
+                explodeds.Add(ped)
+            End If
         End If
 
         If plus10 Then
             For Each dead As Ped In peds.Where(Function(p) p.IsDead).ToArray
-                Call dead.Delete()
+                If explodeds.IndexOf(dead) > -1 Then
+                    explodeds.Remove(dead)
+                    World.AddExplosion(dead.Position, ExplosionType.GasCanister, 50, 5)
+                End If
+
                 Call peds.Remove(dead)
+                Call dead.Delete()
             Next
         End If
 
@@ -63,8 +73,18 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         For Each ped As Ped In peds
             If Not ped.IsInCombat Then
                 Call ped.Task.FightAgainst(Game.Player.Character)
-            ElseIf Not ped.IsDead AndAlso Game.Player.Character.Position.DistanceTo(ped.Position) >= 200 Then
-                Call ped.Kill()
+            ElseIf Not ped.IsDead Then
+                Dim distance = Game.Player.Character.Position.DistanceTo(ped.Position)
+
+                If distance >= 200 Then
+                    Call ped.Kill()
+                ElseIf distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
+                    Call ped.Kill()
+                    Call World.AddExplosion(ped.Position, ExplosionType.GasCanister, 50, 5)
+                    Call peds.Remove(ped)
+                    Call explodeds.Remove(ped)
+                    Call ped.Delete()
+                End If
             End If
         Next
     End Sub

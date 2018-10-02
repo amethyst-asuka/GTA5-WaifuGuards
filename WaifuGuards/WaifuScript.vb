@@ -36,6 +36,7 @@ Public Class WaifuScript : Inherits Script
 
         ' guards.SeparationRange = 1000
         ' guards.Add(Game.Player.Character, leader:=True)
+        Game.Player.Character.CurrentPedGroup.SeparationRange = 2000
     End Sub
 
     Private Sub spawnWaifu(name As String)
