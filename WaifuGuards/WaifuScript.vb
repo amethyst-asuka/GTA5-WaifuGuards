@@ -43,6 +43,7 @@ Public Class WaifuScript : Inherits Script
                 waifuPed.MaxHealth = 10000
                 waifuPed.Armor = 10000
                 waifuPed.IsInvincible = True
+                waifuPed.AlwaysKeepTask = True
                 waifuPed.AddBlip()
 
                 With waifuPed.CurrentBlip
@@ -79,7 +80,7 @@ Public Class WaifuScript : Inherits Script
         ElseIf e.KeyCode = Keys.NumPad9 Then
             ' spawn all
             For Each name As String In names
-                If waifuGuards.Count < 15 Then
+                If waifuGuards.Count < 6 Then
                     ' too many peds will makes GTAV crashed.
                     Call spawnWaifu(name)
                 Else

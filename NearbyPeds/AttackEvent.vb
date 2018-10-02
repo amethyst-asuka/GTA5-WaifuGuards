@@ -44,6 +44,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         If plus10 Then
             For Each dead As Ped In peds.Where(Function(p) p.IsDead).ToArray
                 Call dead.Delete()
+                Call peds.Remove(dead)
             Next
         End If
 
