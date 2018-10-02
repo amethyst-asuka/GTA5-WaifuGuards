@@ -64,7 +64,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             .Color = BlipColor.Yellow
         End With
 
-        If modelName = "ByStaxx" Then
+        If modelName = "Creeper" Then
             Call explodeds.Add(ped)
             Call UI.ShowSubtitle($"Warning: [{modelName}] incomming! ({peds.Count}/{MaxAttacks})")
         Else
