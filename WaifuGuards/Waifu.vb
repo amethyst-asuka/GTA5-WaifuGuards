@@ -47,14 +47,21 @@ Public Class Waifu
 
     Sub New(modelName$, host As WaifuScript)
         Dim model As New Model(modelName)
+        model.Request(500)
 
         If model.IsInCdImage AndAlso model.IsValid Then
+            Do While Not model.IsLoaded
+                Call GTA.Script.Wait(100)
+            Loop
+
             Dim pos = Game.Player.Character.GetOffsetInWorldCoords(host.offsetAroundMe)
             Dim waifu As Ped = World.CreatePed(model, pos)
 
             Name = modelName
             obj = waifu
             script = host
+
+            Call model.MarkAsNoLongerNeeded()
         Else
             MarkDeletePending = True
         End If

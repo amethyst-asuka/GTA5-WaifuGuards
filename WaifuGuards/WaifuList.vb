@@ -16,6 +16,7 @@ Module WaifuList
         "kanna"
     }
     ReadOnly defaultWaifus$() = waifusMegaPack.Append({
+        "taiga",
         "22",
         "33",
         "sora"

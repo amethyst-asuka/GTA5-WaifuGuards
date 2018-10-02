@@ -29,9 +29,15 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     End Function
 
     Private Sub Add(modelName$, model As Model)
+        Call model.Request(500)
+
         If Not (model.IsInCdImage AndAlso model.IsValid) Then
             Call UI.ShowSubtitle($"Missing model [{modelName}]...")
             Return
+        Else
+            Do While Not model.IsLoaded
+                Call GTA.Script.Wait(100)
+            Loop
         End If
 
         Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
@@ -56,6 +62,8 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
         Else
             Call UI.ShowSubtitle($"[{modelName}] incomming! ({peds.Count}/{MaxAttacks})")
         End If
+
+        Call model.MarkAsNoLongerNeeded()
     End Sub
 
     Protected Overrides Sub DoEvent(script As PedScript)
