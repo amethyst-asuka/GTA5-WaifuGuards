@@ -14,7 +14,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-300, 300), rand.Next(-300, 300), 0)
+        Return New Vector3(rand.Next(-200, 200), rand.Next(-200, 200), 0)
     End Function
 
     Protected Overrides Sub DoEvent(script As PedScript)
@@ -28,7 +28,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             Call ped.Task.FightAgainst(Game.Player.Character)
             Call peds.Add(ped)
 
-            Call UI.ShowSubtitle($"'{model.name}' incomming!")
+            Call UI.ShowSubtitle($"[{model.name}] incomming!")
         End If
 
         If plus10 Then

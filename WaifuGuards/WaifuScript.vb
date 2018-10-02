@@ -116,8 +116,8 @@ Public Class WaifuScript : Inherits Script
             End If
 
             ' removes too far away peds for release memory
-            If waifu.DistanceToPlayer > 1000 Then
-                ' Call UI.Notify($"Delete [{waifu.Name}] due to she is too far away from you.")
+            If waifu.DistanceToPlayer > 500 Then
+                Call UI.ShowSubtitle($"Delete [{waifu.Name}] due to she is too far away from you.")
                 Call waifu.Delete()
             End If
         Next
