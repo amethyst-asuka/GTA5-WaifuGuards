@@ -14,7 +14,7 @@ Public MustInherit Class TickEvent(Of TScript As Script)
         lastCheck = Now
     End Sub
 
-    Public Sub Tick(script As TScript)
+    Public Overridable Sub Tick(script As TScript)
         If Now - lastCheck >= timeSpan Then
             Call DoEvent(script)
             lastCheck = Now

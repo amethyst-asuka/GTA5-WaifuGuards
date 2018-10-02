@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports GTA.Math
 Imports GTA.Native
+Imports GTA.WaifuGuards.NearbyPeds
 
 Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
@@ -9,8 +10,8 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim plus10 As Boolean = False
     Dim explodeds As New List(Of Ped)
 
-    Const MaxAttacks% = 5
-    Const SpawnRadius% = 60
+    Const MaxAttacks% = 10
+    Const SpawnRadius% = 80
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 5))
@@ -103,13 +104,26 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
                 If distance >= 200 Then
                     Call ped.Kill()
-                ElseIf distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
-                    Call ped.Kill()
-                    Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 20)
-                    Call peds.Remove(ped)
-                    Call explodeds.Remove(ped)
-                    Call ped.Delete()
                 End If
+            End If
+        Next
+    End Sub
+
+    Public Overrides Sub Tick(script As PedScript)
+        Call MyBase.Tick(script)
+        Call explosionNearbyPlayerImmediately()
+    End Sub
+
+    Private Sub explosionNearbyPlayerImmediately()
+        For Each ped As Ped In peds.Where(Function(p) Not p.IsDead)
+            Dim distance = Game.Player.Character.Position.DistanceTo(ped.Position)
+
+            If distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
+                Call ped.Kill()
+                Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 20)
+                Call peds.Remove(ped)
+                Call explodeds.Remove(ped)
+                Call ped.Delete()
             End If
         Next
     End Sub
