@@ -26,7 +26,7 @@ Public Class WaifuScript : Inherits Script
             events.Add(New FollowPlayer)
         Else
             ' Given warning message
-            ' UI.Notify("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
+            UI.ShowSubtitle("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
         End If
     End Sub
 
@@ -43,6 +43,15 @@ Public Class WaifuScript : Inherits Script
                 waifuPed.MaxHealth = 10000
                 waifuPed.Armor = 10000
                 waifuPed.IsInvincible = True
+
+                Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
+                Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
+                Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
+
+                Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
+                Call waifuPed.Task.ClearAllImmediately()
+                Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+                Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
             End Sub)
 
         Call waifuGuards.Add(waifu)
@@ -85,7 +94,7 @@ Public Class WaifuScript : Inherits Script
 
     Private Sub Waifus_Tick(sender As Object, e As EventArgs) Handles Me.Tick
         For Each [event] As TickEvent(Of WaifuScript) In events
-            Call [event].Tick(Me)
+            ' Call [event].Tick(Me)
         Next
 
         For Each waifu As Waifu In waifuGuards.ToArray
@@ -95,15 +104,15 @@ Public Class WaifuScript : Inherits Script
                 End If
 
                 ' try to prevent kill each other
-                For Each partner As Waifu In waifuGuards _
-                    .Where(Function(ped)
-                               Return Not ped Is waifu AndAlso Not ped.IsDead
-                           End Function)
+                'For Each partner As Waifu In waifuGuards _
+                '    .Where(Function(ped)
+                '               Return Not ped Is waifu AndAlso Not ped.IsDead
+                '           End Function)
 
-                    Call waifu.StopAttack(partner)
-                Next
+                '    Call waifu.StopAttack(partner)
+                'Next
 
-                Call waifu.StopAttack(Game.Player.Character)
+                ' Call waifu.StopAttack(Game.Player.Character)
 
                 'If waifu.IsAvailable Then
                 '    If Game.Player.Character.IsInMeleeCombat Then
