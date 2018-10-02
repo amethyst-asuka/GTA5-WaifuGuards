@@ -126,6 +126,8 @@ Public Class WaifuScript : Inherits Script
                         End Sub)
                 End If
             End If
+        ElseIf e.KeyCode = Keys.I Then
+            Game.Player.Character.Task.ClearAllImmediately()
         End If
     End Sub
 
