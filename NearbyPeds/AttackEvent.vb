@@ -26,6 +26,14 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Protected Overrides Sub DoEvent(script As PedScript)
         If script.ToggleAttacks AndAlso peds.Count < MaxAttacks Then
             Dim model = script.NextModel
+
+            If Not (model.model.IsInCdImage AndAlso model.model.IsValid) Then
+                Call UI.ShowSubtitle($"Missing model [{model.name}]...")
+                Return
+            Else
+                Call UI.ShowSubtitle($"[{model.name}] incomming! ({peds.Count}/{MaxAttacks})")
+            End If
+
             Dim position = Game.Player.Character.GetOffsetInWorldCoords(offsetAroundMe)
             Dim ped As Ped = World.CreatePed(model.model, position)
             Dim weapon As WeaponHash = WeaponHash.Hatchet
@@ -39,10 +47,8 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             With ped.CurrentBlip
                 .Scale = 0.7!
                 .Name = "Incomming Attack!"
-                .Color = BlipColor.Green
+                .Color = BlipColor.Yellow
             End With
-
-            Call UI.ShowSubtitle($"[{model.name}] incomming! ({peds.Count}/{MaxAttacks})")
         End If
 
         If plus10 Then
