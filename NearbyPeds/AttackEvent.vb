@@ -9,11 +9,11 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim explodeds As New List(Of Ped)
     Dim deathDelQueue As New PendingQueue(Of PedScript)
 
-    Const MaxAttacks% = 10
-    Const SpawnRadius% = 40
+    Const MaxAttacks% = 20
+    Const SpawnRadius% = 30
 
     Public Sub New()
-        MyBase.New(New TimeSpan(0, 0, 5))
+        MyBase.New(New TimeSpan(0, 0, 1))
 
 #If DEBUG Then
         ' Call Add("ByStaxx", New Model("ByStaxx"))
@@ -90,14 +90,22 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
                     End If
 
                     If explodeds.IndexOf(dead) > -1 Then
-                        explodeds.Remove(dead)
-                        World.AddExplosion(dead.Position, ExplosionType.GasTank, 30, 20)
+                        Try
+                            explodeds.Remove(dead)
+                            World.AddExplosion(dead.Position, ExplosionType.GasTank, 30, 10)
+                        Catch ex As Exception
+
+                        End Try
                     End If
 
-                    Call peds.Remove(dead)
-                    Call dead.Delete()
+                    Try
+                        Call peds.Remove(dead)
+                        Call dead.Delete()
+                    Catch ex As Exception
+
+                    End Try
                 End Sub
-            Dim del As New PendingEvent(Of PedScript)(New TimeSpan(0, 0, 10), action)
+            Dim del As New PendingEvent(Of PedScript)(New TimeSpan(0, 0, 3), action)
 
             Call deathDelQueue.Add(del)
         Next
@@ -126,11 +134,15 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             Dim distance = Game.Player.Character.Position.DistanceTo(ped.Position)
 
             If distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
-                Call ped.Kill()
-                Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 20)
-                Call peds.Remove(ped)
-                Call explodeds.Remove(ped)
-                Call ped.Delete()
+                Try
+                    Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 10)
+                    Call ped.Kill()
+                    Call peds.Remove(ped)
+                    Call explodeds.Remove(ped)
+                    Call ped.Delete()
+                Catch ex As Exception
+
+                End Try
             End If
         Next
     End Sub
