@@ -9,9 +9,7 @@ Public Class SplineCamera
     Dim _startPos As Vector3, _previousPos As Vector3
 
     Public ReadOnly Property MainCamera() As Camera
-    Public ReadOnly Property Nodes() As List(Of Tuple(Of Vector3, Vector3))
-
-    Public Property InterpToPlayer() As Boolean
+    Public Property InterpToPlayer As Boolean
 
     Public WriteOnly Property Speed() As Integer
         Set
@@ -21,15 +19,12 @@ Public Class SplineCamera
 
     Public Sub New()
         Me._mainCamera = New Camera([Function].[Call](Of Integer)(Hash.CREATE_CAM, "DEFAULT_SPLINE_CAMERA", 0))
-        Me._nodes = New List(Of Tuple(Of Vector3, Vector3))()
         Me._replayTimer = New Timer(1100)
         Me._renderSceneTimer = New Timer(5000)
         Me._renderSceneTimer.Start()
     End Sub
 
     Public Sub AddNode(position As Vector3, rotation As Vector3, duration As Integer)
-        _Nodes.Add(New Tuple(Of Vector3, Vector3)(position, rotation))
-
         [Function].[Call](Hash.ADD_CAM_SPLINE_NODE, _MainCamera.Handle,
                           position.X, position.Y, position.Z,
                           rotation.X, rotation.Y, rotation.Z,

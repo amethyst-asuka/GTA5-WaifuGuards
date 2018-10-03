@@ -5,7 +5,9 @@ Imports GTA.Math
 Public Class CameraScript : Inherits Script
 
     Dim rand As New Random
-    Dim splineCam As New SplineCamera
+    Dim splineCam As New SplineCamera With {
+        .InterpToPlayer = True
+    }
 
     Private Sub CameraScript_Tick(sender As Object, e As EventArgs) Handles Me.Tick
         Call splineCam.Update()
