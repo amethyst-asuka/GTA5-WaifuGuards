@@ -85,7 +85,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             For Each dead As Ped In peds.Where(Function(p) p.IsDead).ToArray
                 If explodeds.IndexOf(dead) > -1 Then
                     explodeds.Remove(dead)
-                    World.AddExplosion(dead.Position, ExplosionType.GasTank, 30, 20)
+                    World.AddExplosion(dead.Position, ExplosionType.GasTank, 30, 8)
                 End If
 
                 Call peds.Remove(dead)
@@ -119,7 +119,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
             If distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
                 Call ped.Kill()
-                Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 20)
+                Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 8)
                 Call peds.Remove(ped)
                 Call explodeds.Remove(ped)
                 Call ped.Delete()
