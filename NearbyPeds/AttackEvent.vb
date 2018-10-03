@@ -7,7 +7,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim rand As New Random
     Dim peds As New List(Of Ped)
     Dim explodeds As New List(Of Ped)
-    Dim deathDelQueue As PendingQueue(Of PedScript)
+    Dim deathDelQueue As New PendingQueue(Of PedScript)
 
     Const MaxAttacks% = 10
     Const SpawnRadius% = 60
