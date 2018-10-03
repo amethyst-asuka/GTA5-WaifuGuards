@@ -21,9 +21,13 @@ Public Class CameraScript : Inherits Script
 
     Private Sub CameraScript_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If e.KeyCode = Keys.O Then
-            Call splineCam.EnterCameraView(Game.Player.Character.GetOffsetInWorldCoords(New Vector3(0, 0, 10.0F)))
-        ElseIf e.KeyCode = Keys.Escape Then
-            Call splineCam.ExitCameraView()
+            toggleOn = Not toggleOn
+
+            If toggleOn Then
+                Call splineCam.EnterCameraView(Game.Player.Character.GetOffsetInWorldCoords(New Vector3(0, 0, 10.0F)))
+            Else
+                Call splineCam.ExitCameraView()
+            End If
         End If
     End Sub
 End Class
