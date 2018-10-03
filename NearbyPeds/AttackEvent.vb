@@ -10,7 +10,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim deathDelQueue As New PendingQueue(Of PedScript)
 
     Const MaxAttacks% = 10
-    Const SpawnRadius% = 60
+    Const SpawnRadius% = 40
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 5))
