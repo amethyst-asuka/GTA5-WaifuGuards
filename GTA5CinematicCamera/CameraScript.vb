@@ -1,19 +1,14 @@
 ﻿Imports System.Windows.Forms
 Imports GTA
+Imports GTA.Math
 
 Public Class CameraScript : Inherits Script
 
-    Dim toggleOn As Boolean = False
     Dim rand As New Random
+    Dim splineCam As SplineCamera
 
     Private Sub CameraScript_Tick(sender As Object, e As EventArgs) Handles Me.Tick
-        If toggleOn Then
-            Call RunCamera()
-        End If
-    End Sub
-
-    Private Sub RunCamera()
-
+        Call splineCam.Update()
     End Sub
 
     Private Sub SplineAbove()
@@ -30,7 +25,7 @@ Public Class CameraScript : Inherits Script
 
     Private Sub CameraScript_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If e.KeyCode = Keys.O Then
-            toggleOn = Not toggleOn
+            splineCam.EnterCameraView(Game.Player.Character.GetOffsetInWorldCoords(New Vector3(0, 0, 10.0F)))
         End If
     End Sub
 End Class
