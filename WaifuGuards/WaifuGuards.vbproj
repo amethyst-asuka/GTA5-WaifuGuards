@@ -94,6 +94,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PendingQueue.vb" />
     <Compile Include="Events\AssistPlayer.vb" />
     <Compile Include="Events\StopAttackPartner.vb" />
     <Compile Include="Events\FollowPlayer.vb" />

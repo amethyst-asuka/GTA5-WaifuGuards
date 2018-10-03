@@ -19,8 +19,7 @@ Public Class WaifuScript : Inherits Script
 
     Friend ReadOnly waifuGuards As New List(Of Waifu)
     Friend ReadOnly events As New List(Of TickEvent(Of WaifuScript))
-    Friend ReadOnly pendings As New List(Of PendingEvent(Of WaifuScript))
-    ' Friend ReadOnly guards As New PedGroup
+    Friend ReadOnly pendingQueue As PendingQueue(Of WaifuScript)
 
     Dim toggleKillable As Boolean = False
 
@@ -37,6 +36,7 @@ Public Class WaifuScript : Inherits Script
         ' guards.SeparationRange = 1000
         ' guards.Add(Game.Player.Character, leader:=True)
         Game.Player.Character.CurrentPedGroup.SeparationRange = 2000
+        pendingQueue = New PendingQueue(Of WaifuScript)(Me)
     End Sub
 
     Private Sub spawnWaifu(name As String)
@@ -83,7 +83,7 @@ Public Class WaifuScript : Inherits Script
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Sub Pending(action As PendingEvent(Of WaifuScript))
-        pendings.Add(action)
+        Call pendingQueue.Add(action)
     End Sub
 
     ''' <summary>
@@ -180,13 +180,6 @@ Public Class WaifuScript : Inherits Script
             End If
         Next
 
-        Dim actives As PendingEvent(Of WaifuScript)() = pendings _
-            .Where(Function(task) task.IsReady) _
-            .ToArray
-
-        For Each task As PendingEvent(Of WaifuScript) In actives
-            Call task.Tick(Me)
-            Call pendings.Remove(task)
-        Next
+        Call pendingQueue.Tick()
     End Sub
 End Class
