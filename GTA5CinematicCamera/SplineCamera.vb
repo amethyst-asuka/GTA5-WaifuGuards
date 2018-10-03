@@ -90,7 +90,8 @@ Public Class SplineCamera
                 End If
             Else
                 ' render local scene
-                Dim lastPos = Vector3.Subtract(_mainCamera.Position, _previousPos)
+                Dim lastPos = Vector3.Subtract(_MainCamera.Position, _previousPos)
+
                 [Function].[Call](Hash._SET_FOCUS_AREA,
                                   _MainCamera.Position.X, _MainCamera.Position.Y, _MainCamera.Position.Z,
                                   lastPos.X, lastPos.Y, lastPos.Z)
