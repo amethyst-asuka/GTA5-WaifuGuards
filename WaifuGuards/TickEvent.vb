@@ -25,6 +25,9 @@ Public MustInherit Class TickEvent
 
 End Class
 
+''' <summary>
+''' Event happens after a given length time span.
+''' </summary>
 Public Class PendingEvent : Inherits TickEvent
 
     ReadOnly action As Action(Of WaifuScript)
