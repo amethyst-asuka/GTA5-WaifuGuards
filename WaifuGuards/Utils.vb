@@ -15,6 +15,12 @@ Public Module Utils
         End Get
     End Property
 
+    ''' <summary>
+    ''' Join two collection as an array.
+    ''' </summary>
+    ''' <param name="list"></param>
+    ''' <param name="add"></param>
+    ''' <returns></returns>
     <Extension>
     Public Function Append(list As IEnumerable(Of String), add As IEnumerable(Of String)) As String()
         With New List(Of String)

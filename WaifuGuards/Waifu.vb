@@ -97,7 +97,7 @@ Public Class Waifu
     ''' Kill this waifu and pending to delete after 30 seconds
     ''' </summary>
     Public Sub Kill()
-        Dim task As New PendingEvent(New TimeSpan(0, 0, 30), AddressOf Delete)
+        Dim task As New PendingEvent(Of WaifuScript)(New TimeSpan(0, 0, 30), AddressOf Delete)
 
         Call obj.Kill()
         Call script.Pending(task)
