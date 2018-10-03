@@ -10,7 +10,7 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Dim explodeds As New List(Of Ped)
 
     Const MaxAttacks% = 10
-    Const SpawnRadius% = 80
+    Const SpawnRadius% = 60
 
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 5))

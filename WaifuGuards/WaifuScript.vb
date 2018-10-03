@@ -86,6 +86,8 @@ Public Class WaifuScript : Inherits Script
         pendings.Add(action)
     End Sub
 
+    Dim toggleIdleCameraOn As Boolean = False
+
     ''' <summary>
     ''' Press key ``Y`` for spawn a waifu.
     ''' </summary>
@@ -127,7 +129,20 @@ Public Class WaifuScript : Inherits Script
                 End If
             End If
         ElseIf e.KeyCode = Keys.I Then
-            Game.Player.Character.Task.ClearAllImmediately()
+            toggleIdleCameraOn = Not toggleIdleCameraOn
+            Game.Player.Character.FreezePosition = toggleIdleCameraOn
+        ElseIf e.KeyCode = Keys.Add Then
+            If toggleIdleCameraOn Then
+                Dim pos = Game.Player.Character.Position
+                pos.Z += 1
+                Game.Player.Character.Position = pos
+            End If
+        ElseIf e.KeyCode = Keys.Subtract Then
+            If toggleIdleCameraOn Then
+                Dim pos = Game.Player.Character.Position
+                pos.Z -= 1
+                Game.Player.Character.Position = pos
+            End If
         End If
     End Sub
 
