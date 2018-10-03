@@ -1,88 +1,55 @@
 ﻿Imports System.Runtime.CompilerServices
-Imports GTA.Math
+Imports System.Windows.Forms
 
 Public Class PedScript : Inherits Script
 
-    ReadOnly Skins$() = {
-        "tonacho",
-        "ByStaxx",
-        "Capitan_america",
-        "DeadPool",
-        "ElRubius",
-        "empollon",
-        "LuzuGames",
-        "perxittaa",
-        "Tigre"
+    Public Shared ReadOnly Skins As New Dictionary(Of String, String) From {
+        {"tonacho", "Tonacho"},
+        {"ByStaxx", "Creeper"},
+        {"Capitan_america", "Capitan America"},
+        {"DeadPool", "DeadPool"},
+        {"ElRubius", "ElRubius"},
+        {"empollon", "Empollon"},
+        {"LuzuGames", "LuzuGames"},
+        {"perxittaa", "Perxittaa"},
+        {"Tigre", "Tigre"},
+        {"steve", "Steve"}
     }
     ReadOnly rand As New Random
     ReadOnly player As Integer = Game.Player.Character.RelationshipGroup
 
-    Dim nearbyPeds As List(Of Ped)
-    Dim distance As Double = 500
+    Friend nearbyPeds As List(Of Ped)
+    Friend events As New List(Of TickEvent(Of PedScript))
 
-    Public ReadOnly Property NextModel As Model
+    Public ReadOnly Property NextModel(Optional name$ = Nothing) As (name As String, model As Model)
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
-            Dim name$ = Skins(rand.Next(0, Skins.Length))
-            Return New Model(name)
+            Dim entry = If(String.IsNullOrEmpty(name),
+                Skins.ElementAt(rand.Next(0, Skins.Count)),
+                New KeyValuePair(Of String, String)(name, Skins(name))
+            )
+            Return (entry.Value, New Model(entry.Key))
         End Get
     End Property
 
+    Public ReadOnly Property ToggleAttacks As Boolean = False
+    Public ReadOnly Property ToggleChangeModel As Boolean = False
+
+    Sub New()
+        events.Add(New AttackEvent)
+    End Sub
+
     Private Sub PedScript_Tick(sender As Object, e As EventArgs) Handles Me.Tick
-        Dim nearby As Ped() = World _
-            .GetNearbyPeds(Game.Player.Character.Position, distance) _
-            .Where(Function(p)
-                       Return p.RelationshipGroup <> player AndAlso nearbyPeds.IndexOf(p) = -1
-                   End Function)
-
-        For Each ped As Ped In nearby
-            If Not ped.IsDead Then
-                Call nearbyPeds.Add(PedChangeModel(ped))
-            End If
-        Next
-
-        For Each ped As Ped In nearbyPeds.ToArray
-            If ped.IsDead Then
-                nearbyPeds.Remove(ped)
-            End If
+        For Each [event] As TickEvent(Of PedScript) In events
+            Call [event].Tick(Me)
         Next
     End Sub
 
-    Private Function PedChangeModel(nearbyPed As Ped) As Ped
-        Dim location As Vector3 = nearbyPed.Position
-        Dim ped As Ped = World.CreatePed(NextModel, location)
-
-        With nearbyPed
-            ped.Accuracy = .Accuracy
-            ped.Alpha = .Alpha
-            ped.Armor = .Armor
-            ped.CanFlyThroughWindscreen = .CanFlyThroughWindscreen
-            ped.CanRagdoll = .CanRagdoll
-            ped.CanSufferCriticalHits = .CanSufferCriticalHits
-            ped.CanWrithe = .CanWrithe
-            ped.DropsWeaponsOnDeath = .DropsWeaponsOnDeath
-            ped.FreezePosition = .FreezePosition
-            ped.HasCollision = .HasCollision
-            ped.Heading = .Heading
-            ped.Health = .Health
-            ped.IsBulletProof = .IsBulletProof
-            ped.IsCollisionProof = .IsCollisionProof
-            ped.IsDucking = .IsDucking
-            ped.IsExplosionProof = .IsExplosionProof
-            ped.IsFireProof = .IsFireProof
-            ped.IsInvincible = .IsInvincible
-            ped.IsMeleeProof = .IsMeleeProof
-            ped.IsOnlyDamagedByPlayer = .IsOnlyDamagedByPlayer
-            ped.IsPersistent = .IsPersistent
-            ped.IsVisible = .IsVisible
-            ped.LodDistance = .LodDistance
-            ped.MaxHealth = .MaxHealth
-            ped.Money = .Money
-            ped.RelationshipGroup = .RelationshipGroup
-        End With
-
-        Call nearbyPed.Delete()
-
-        Return ped
-    End Function
+    Private Sub PedScript_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        If e.KeyCode = Keys.NumPad1 Then
+            _ToggleAttacks = Not ToggleAttacks
+        ElseIf e.KeyCode = Keys.I Then
+            _ToggleChangeModel = Not ToggleChangeModel
+        End If
+    End Sub
 End Class

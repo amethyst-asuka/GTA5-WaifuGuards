@@ -4,18 +4,19 @@ Imports System.Runtime.CompilerServices
 Module WaifuList
 
     ReadOnly waifusMegaPack$() = {
-        "ram",
-        "rem",
         "rmiku2015",
         "rmiku2016",
         "tohka",
         "tohru",
+        "kotori",
         "yoshino",
         "beatrice",
-        "kanna",
-        "kotori"
+        "ram",
+        "rem",
+        "kanna"
     }
     ReadOnly defaultWaifus$() = waifusMegaPack.Append({
+        "taiga",
         "22",
         "33",
         "sora"

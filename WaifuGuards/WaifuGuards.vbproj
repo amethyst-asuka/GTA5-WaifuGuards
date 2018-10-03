@@ -47,10 +47,31 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestMyGame|AnyCPU'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\TestMyGame\</OutputPath>
+    <DocumentationFile>WaifuGuards.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestMyGame|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>F:\SteamGames\steamapps\common\Grand Theft Auto V\scripts\</OutputPath>
+    <DocumentationFile>WaifuGuards.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScriptHookVDotNet2, Version=2.10.7.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ScriptHookVDotNet\ScriptHookVDotNet2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -74,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\AssistPlayer.vb" />
+    <Compile Include="Events\StopAttackPartner.vb" />
     <Compile Include="Events\FollowPlayer.vb" />
     <Compile Include="Waifu.vb" />
     <Compile Include="Utils.vb" />

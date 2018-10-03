@@ -5,6 +5,8 @@ Public Class Waifu
     ReadOnly obj As Ped
     ReadOnly script As WaifuScript
 
+    Public ReadOnly Property MarkDeletePending As Boolean = False
+
     ''' <summary>
     ''' The model name
     ''' </summary>
@@ -33,6 +35,10 @@ Public Class Waifu
         End Get
     End Property
 
+    ''' <summary>
+    ''' Not dead and not in combat
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property IsAvailable As Boolean
         Get
             Return Not obj.IsDead AndAlso obj.IsInCombat
@@ -40,12 +46,25 @@ Public Class Waifu
     End Property
 
     Sub New(modelName$, host As WaifuScript)
-        Dim pos = Game.Player.Character.GetOffsetInWorldCoords(host.offsetAroundMe)
-        Dim waifu As Ped = World.CreatePed(New Model(modelName), pos)
+        Dim model As New Model(modelName)
+        model.Request(500)
 
-        Name = modelName
-        obj = waifu
-        script = host
+        If model.IsInCdImage AndAlso model.IsValid Then
+            Do While Not model.IsLoaded
+                Call GTA.Script.Wait(100)
+            Loop
+
+            Dim pos = Game.Player.Character.GetOffsetInWorldCoords(host.offsetAroundMe)
+            Dim waifu As Ped = World.CreatePed(model, pos)
+
+            Name = modelName
+            obj = waifu
+            script = host
+
+            Call model.MarkAsNoLongerNeeded()
+        Else
+            MarkDeletePending = True
+        End If
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -58,15 +77,19 @@ Public Class Waifu
         Call action(obj.Task)
     End Sub
 
+    Public Function IsFightAgainst(partner As Waifu) As Boolean
+        Return obj.IsInCombatAgainst(partner.obj)
+    End Function
+
+    Public Sub StopAttack()
+        Call obj.Task.ClearAll()
+        Call obj.Task.HandsUp(3000)
+    End Sub
+
     Public Sub StopAttack(target As Ped)
         If obj.IsInCombatAgainst(target) Then
             Call obj.Task.ClearAllImmediately()
-        End If
-    End Sub
-
-    Public Sub StopAttack(target As Waifu)
-        If obj.IsInCombatAgainst(target.obj) Then
-            Call obj.Task.ClearAllImmediately()
+            ' Call obj.Task.AimAt(target, 1)
         End If
     End Sub
 
@@ -74,19 +97,27 @@ Public Class Waifu
     ''' Kill this waifu and pending to delete after 30 seconds
     ''' </summary>
     Public Sub Kill()
-        Dim task As New PendingEvent(
-            New TimeSpan(0, 0, 30),
-            Sub(script)
-                Call obj.Delete()
-                Call script.waifuGuards.Remove(Me)
-            End Sub)
+        Dim task As New PendingEvent(New TimeSpan(0, 0, 30), AddressOf Delete)
 
         Call obj.Kill()
         Call script.Pending(task)
+
+        _MarkDeletePending = True
     End Sub
 
     Public Sub Delete()
-        Call obj.Delete()
         Call script.waifuGuards.Remove(Me)
+        ' Call script.guards.Remove(obj)
+        Call obj.Delete()
     End Sub
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Shared Operator =(waifu As Waifu, ped As Ped) As Boolean
+        Return waifu.obj Is ped
+    End Operator
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Shared Operator <>(waifu As Waifu, ped As Ped) As Boolean
+        Return Not waifu = ped
+    End Operator
 End Class
