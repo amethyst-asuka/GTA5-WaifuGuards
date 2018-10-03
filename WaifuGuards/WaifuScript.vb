@@ -19,7 +19,7 @@ Public Class WaifuScript : Inherits Script
 
     Friend ReadOnly waifuGuards As New List(Of Waifu)
     Friend ReadOnly events As New List(Of TickEvent(Of WaifuScript))
-    Friend ReadOnly pendings As New List(Of PendingEvent)
+    Friend ReadOnly pendings As New List(Of PendingEvent(Of WaifuScript))
     ' Friend ReadOnly guards As New PedGroup
 
     Dim toggleKillable As Boolean = False
@@ -82,7 +82,7 @@ Public Class WaifuScript : Inherits Script
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Public Sub Pending(action As PendingEvent)
+    Public Sub Pending(action As PendingEvent(Of WaifuScript))
         pendings.Add(action)
     End Sub
 
@@ -180,11 +180,11 @@ Public Class WaifuScript : Inherits Script
             End If
         Next
 
-        Dim actives As PendingEvent() = pendings _
+        Dim actives As PendingEvent(Of WaifuScript)() = pendings _
             .Where(Function(task) task.IsReady) _
             .ToArray
 
-        For Each task As PendingEvent In actives
+        For Each task As PendingEvent(Of WaifuScript) In actives
             Call task.Tick(Me)
             Call pendings.Remove(task)
         Next
