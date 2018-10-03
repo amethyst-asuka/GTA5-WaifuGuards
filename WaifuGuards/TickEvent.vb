@@ -28,9 +28,9 @@ End Class
 ''' <summary>
 ''' Event happens after a given length time span.
 ''' </summary>
-Public Class PendingEvent : Inherits TickEvent
+Public Class PendingEvent(Of TScript As Script) : Inherits TickEvent(Of TScript)
 
-    ReadOnly action As Action(Of WaifuScript)
+    ReadOnly action As Action(Of TScript)
 
     Public ReadOnly Property IsReady As Boolean
         Get
@@ -38,12 +38,12 @@ Public Class PendingEvent : Inherits TickEvent
         End Get
     End Property
 
-    Public Sub New(length As TimeSpan, [event] As Action(Of WaifuScript))
+    Public Sub New(length As TimeSpan, [event] As Action(Of TScript))
         MyBase.New(length)
         Me.action = [event]
     End Sub
 
-    Protected Overrides Sub DoEvent(script As WaifuScript)
+    Protected Overrides Sub DoEvent(script As TScript)
         Call action(script)
     End Sub
 End Class
