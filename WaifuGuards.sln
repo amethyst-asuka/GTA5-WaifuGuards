@@ -7,8 +7,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WaifuGuards", "WaifuGuards\
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NearbyPeds", "NearbyPeds\NearbyPeds.vbproj", "{900AA43A-4DF7-466C-BC4D-A58281896D6D}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GTA5CinematicCamera", "GTA5CinematicCamera\GTA5CinematicCamera.vbproj", "{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,22 +51,6 @@ Global
 		{900AA43A-4DF7-466C-BC4D-A58281896D6D}.TestMyGame|Any CPU.Build.0 = TestMyGame|Any CPU
 		{900AA43A-4DF7-466C-BC4D-A58281896D6D}.TestMyGame|x64.ActiveCfg = TestMyGame|x64
 		{900AA43A-4DF7-466C-BC4D-A58281896D6D}.TestMyGame|x64.Build.0 = TestMyGame|x64
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Debug|x64.Build.0 = Debug|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.GTAV-plugin-release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.GTAV-plugin-release|Any CPU.Build.0 = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.GTAV-plugin-release|x64.ActiveCfg = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.GTAV-plugin-release|x64.Build.0 = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Release|x64.ActiveCfg = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.Release|x64.Build.0 = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.TestMyGame|Any CPU.ActiveCfg = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.TestMyGame|Any CPU.Build.0 = Release|Any CPU
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.TestMyGame|x64.ActiveCfg = TestMyGame|x64
-		{C4DEC769-BAD2-474E-A232-1BE7E1BE081D}.TestMyGame|x64.Build.0 = TestMyGame|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
