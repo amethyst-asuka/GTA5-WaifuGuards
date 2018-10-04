@@ -3,6 +3,7 @@ Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
+Imports Microsoft.VisualBasic.Serialization.JSON
 
 ''' <summary>
 ''' User Manager
@@ -30,7 +31,7 @@ Public Class UsersMgr
 
     <Protocol(CSNetwork.Protocols.Ping)>
     Public Function Ping(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
-
+        Dim user = New IPEndPoint(RemoteAddress).GetJson.MD5
     End Function
 
     <Protocol(CSNetwork.Protocols.LogIn)>
