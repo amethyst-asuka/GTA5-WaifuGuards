@@ -85,8 +85,8 @@ Public Class WaifuScript : Inherits Script
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-5, 5), rand.Next(-5, 5), 0)
+    Public Function offsetAroundMe() As Vector3
+        Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -191,10 +191,10 @@ Public Class WaifuScript : Inherits Script
                 ' removes too far away peds for release memory
                 Dim distance# = waifu.DistanceToPlayer
 
-                If distance > 400 Then
+                If distance > 200 Then
                     Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                     Call waifu.Delete()
-                ElseIf distance > 50 Then
+                ElseIf distance > 30 Then
                     Call waifu.TakeAction(
                         Sub(actions As Tasks)
                             Call actions.ClearAllImmediately()

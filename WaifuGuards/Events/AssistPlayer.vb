@@ -17,7 +17,6 @@
         For Each waifu As Waifu In script.waifuGuards.Where(Function(w) w.IsAvailable)
             Call waifu.TakeAction(
                 Sub(actions As Tasks)
-                    Call actions.ClearAllImmediately()
                     Call actions.ShootAt(target)
                 End Sub)
         Next
