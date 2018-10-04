@@ -10,8 +10,6 @@
         ' Only shoot at ped
         If target Is Nothing OrElse Not TypeOf target Is Ped Then
             Return
-        Else
-            Call UI.ShowSubtitle("Assist fire!")
         End If
 
         Dim pedTarget As Ped = target
@@ -19,6 +17,8 @@
         ' Not shoot my guards
         If script.waifuGuards.Any(Function(w) w = pedTarget) Then
             Return
+        Else
+            Call UI.ShowSubtitle("Assist fire!")
         End If
 
         For Each waifu As Waifu In script.waifuGuards.Where(Function(w) w.IsAvailable)

@@ -13,6 +13,8 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
     End Sub
 
     Public Shared Sub PlayerUnion(script As WaifuScript, skipAssert As Func(Of Waifu, Boolean))
+        Dim playerOutOfVehicle As Boolean = Game.Player.Character.IsInVehicle
+
         For Each waifu As Waifu In script.waifuGuards
             If True = skipAssert(waifu) Then
                 Continue For
@@ -41,6 +43,13 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
                     End Sub)
             Else
                 ' too close, do nothing
+            End If
+
+            If playerOutOfVehicle AndAlso waifu.IsInVehicle Then
+                Call waifu.TakeAction(
+                    Sub(actions As Tasks)
+                        Call actions.LeaveVehicle()
+                    End Sub)
             End If
         Next
     End Sub
