@@ -126,6 +126,10 @@ Public Class WaifuScript : Inherits Script
             ' Calls closest enter your vehicle
             If Not vehicle Is Nothing AndAlso Game.Player.Character.IsInVehicle(vehicle) Then
                 Dim minDistanceWaifu = waifuGuards _
+                    .Where(Function(w)
+                               ' try to make all waifus enter your bus
+                               Return Not w.IsInVehicle(vehicle)
+                           End Function) _
                     .OrderBy(Function(w) w.DistanceToPlayer) _
                     .FirstOrDefault
 

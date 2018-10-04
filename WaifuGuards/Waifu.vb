@@ -65,6 +65,14 @@ Public Class Waifu
         End Get
     End Property
 
+    Public Function IsInVehicle(Optional vehicle As Vehicle = Nothing) As Boolean
+        If vehicle Is Nothing Then
+            Return obj.IsInVehicle
+        Else
+            Return obj.IsInVehicle(vehicle)
+        End If
+    End Function
+
     Sub New(modelName$, host As WaifuScript)
         Dim model As New Model(modelName)
         model.Request(500)
