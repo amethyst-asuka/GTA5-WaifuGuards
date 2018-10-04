@@ -20,6 +20,19 @@ Public Class Waifu
         End Get
     End Property
 
+    Public ReadOnly Property Target As Ped
+        Get
+            Return World.GetAllPeds _
+                .Where(Function(p) obj.IsInCombatAgainst(p)) _
+                .FirstOrDefault
+        End Get
+    End Property
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Function DistanceTo(target As Ped) As Double
+        Return obj.Position.DistanceTo(target.Position)
+    End Function
+
     Public ReadOnly Property DistanceToPlayer As Double
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
@@ -118,7 +131,7 @@ Public Class Waifu
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Operator =(waifu As Waifu, ped As Ped) As Boolean
-        Return waifu.obj Is ped
+        Return waifu.obj Is ped OrElse waifu.obj.Handle = ped.Handle
     End Operator
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>

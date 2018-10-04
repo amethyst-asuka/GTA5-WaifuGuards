@@ -121,7 +121,7 @@ Public Class WaifuScript : Inherits Script
         ElseIf e.KeyCode = Keys.Delete Then
             toggleKillable = Not toggleKillable
         ElseIf e.KeyCode = Keys.E Then
-            Dim vehicle = World.GetClosestVehicle(Game.Player.Character.Position, 10)
+            Dim vehicle = World.GetClosestVehicle(Game.Player.Character.Position, 20)
 
             ' Calls closest enter your vehicle
             If Not vehicle Is Nothing AndAlso Game.Player.Character.IsInVehicle(vehicle) Then
@@ -132,7 +132,12 @@ Public Class WaifuScript : Inherits Script
                 If Not minDistanceWaifu Is Nothing Then
                     Call minDistanceWaifu.TakeAction(
                         Sub(actions As Tasks)
-                            Call actions.ClearAllImmediately()
+                            Call UI.ShowSubtitle($"[{minDistanceWaifu.Name}], get into my vehicle.")
+
+                            If minDistanceWaifu.IsInCombat Then
+                                Call actions.ClearAllImmediately()
+                            End If
+
                             Call actions.EnterVehicle(vehicle, VehicleSeat.Passenger)
                         End Sub)
                 End If
@@ -140,9 +145,9 @@ Public Class WaifuScript : Inherits Script
         ElseIf e.KeyCode = Keys.I Then
             ' toggleIdleCameraOn = Not toggleIdleCameraOn
             ' Game.Player.Character.FreezePosition = toggleIdleCameraOn
-            toggleGangGroupMode = Not toggleGangGroupMode
+            ' toggleGangGroupMode = Not toggleGangGroupMode
 
-            Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
+            ' Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
 
         ElseIf e.KeyCode = Keys.Add Then
             If toggleIdleCameraOn Then
@@ -195,11 +200,39 @@ Public Class WaifuScript : Inherits Script
                     Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                     Call waifu.Delete()
                 ElseIf distance > 30 Then
-                    Call waifu.TakeAction(
-                        Sub(actions As Tasks)
-                            ' Call actions.ClearAllImmediately()
-                            Call actions.RunTo(Game.Player.Character.Position)
-                        End Sub)
+                    ' not working as expected....
+                    ' the code cause the ped freezed
+                    '
+                    ' Call waifu.TakeAction(
+                    '     Sub(actions As Tasks)
+                    '         ' Call actions.ClearAllImmediately()
+                    '         Call actions.RunTo(Game.Player.Character.Position)
+                    '     End Sub)
+                End If
+
+                If waifu.IsInCombat Then
+                    Dim target As Ped = waifu.Target
+
+                    If Not target Is Nothing AndAlso target.IsDead Then
+                        Call waifu.TakeAction(
+                            Sub(actions As Tasks)
+                                Call actions.ClearAllImmediately()
+
+                                If Not nearby Is Nothing Then
+                                    Call actions.FightAgainst(nearby)
+                                End If
+                            End Sub)
+                    ElseIf Not target Is Nothing AndAlso waifu.DistanceTo(target) > 50 Then
+                        ' If too far away with the target, given up fight with him
+                        Call waifu.TakeAction(
+                            Sub(actions As Tasks)
+                                Call actions.ClearAllImmediately()
+
+                                If Not nearby Is Nothing Then
+                                    Call actions.FightAgainst(nearby)
+                                End If
+                            End Sub)
+                    End If
                 End If
             Else
                 If Not waifu.MarkDeletePending Then
