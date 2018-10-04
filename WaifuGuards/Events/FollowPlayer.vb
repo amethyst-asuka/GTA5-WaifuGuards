@@ -13,7 +13,7 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
     End Sub
 
     Public Shared Sub PlayerUnion(script As WaifuScript, skipAssert As Func(Of Waifu, Boolean))
-        Dim playerOutOfVehicle As Boolean = Game.Player.Character.IsInVehicle
+        Dim playerOutOfVehicle As Boolean = Not Game.Player.Character.IsInVehicle
 
         For Each waifu As Waifu In script.waifuGuards
             If True = skipAssert(waifu) Then
