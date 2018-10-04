@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
+Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Module CSNetwork
 
@@ -20,17 +21,10 @@ Public Module CSNetwork
         Return New RequestStream(EntryPoint, Protocols.Ping)
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="uid"></param>
-    ''' <param name="name$">Your display name</param>
-    ''' <param name="modelName$">Character model name</param>
-    ''' <returns></returns>
-    ''' 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Public Function LogIn(uid As Long, name$, modelName$) As RequestStream
-        Return New RequestStream(EntryPoint, Protocols.LogIn)
+    <Extension>
+    Public Function LogIn(user As NetworkUser) As RequestStream
+        Return New RequestStream(EntryPoint, Protocols.LogIn, user.GetJson)
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -38,3 +32,23 @@ Public Module CSNetwork
         Return New RequestStream(EntryPoint, Protocols.LogOut, BitConverter.GetBytes(uid))
     End Function
 End Module
+
+Public Class NetworkUser
+
+    Public Property Uid As Long
+    ''' <summary>
+    ''' Your display name
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Name As String
+
+    ''' <summary>
+    ''' Character model name
+    ''' 
+    ''' If character model is missing in your friend's game, then will 
+    ''' display the default character model ``Michael``.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property ModelName As String
+
+End Class
