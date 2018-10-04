@@ -63,19 +63,25 @@ Public Class WaifuScript : Inherits Script
                     End With
 
                     If toggleGangGroupMode Then
-                        Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
-                        Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
-                        Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
-
-                        Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
-                        Call waifuPed.Task.ClearAllImmediately()
-                        Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
-                        Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
+                        Call AddGangGroup(waifuPed, name)
                     End If
                 End Sub)
 
             Call waifuGuards.Add(waifu)
         End If
+    End Sub
+
+    Private Sub AddGangGroup(waifuPed As Ped, name$)
+        Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
+        Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
+        Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
+
+        Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
+        Call waifuPed.Task.ClearAllImmediately()
+        Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+        Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
+
+        Call UI.ShowSubtitle($"Bring [{name}] as one of your group member.")
     End Sub
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -135,6 +141,9 @@ Public Class WaifuScript : Inherits Script
             ' toggleIdleCameraOn = Not toggleIdleCameraOn
             ' Game.Player.Character.FreezePosition = toggleIdleCameraOn
             toggleGangGroupMode = Not toggleGangGroupMode
+
+            Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
+
         ElseIf e.KeyCode = Keys.Add Then
             If toggleIdleCameraOn Then
                 Dim pos = Game.Player.Character.Position
@@ -185,7 +194,7 @@ Public Class WaifuScript : Inherits Script
                 If distance > 400 Then
                     Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                     Call waifu.Delete()
-                ElseIf distance > 40 Then
+                ElseIf distance > 50 Then
                     Call waifu.TakeAction(
                         Sub(actions As Tasks)
                             Call actions.ClearAllImmediately()
