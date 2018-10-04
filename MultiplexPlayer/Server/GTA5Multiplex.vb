@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.VisualBasic.Net
 
+
 Public Class GTA5Multiplex
 
     ReadOnly socket As TcpSynchronizationServicesSocket
@@ -13,6 +14,10 @@ Public Class GTA5Multiplex
     End Sub
 
     Public Function Run() As Integer
+
+    End Function
+
+    Private Function HandleProtocol()
 
     End Function
 End Class
