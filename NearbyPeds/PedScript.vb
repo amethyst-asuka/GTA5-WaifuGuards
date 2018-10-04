@@ -18,7 +18,7 @@ Public Class PedScript : Inherits Script
     ReadOnly rand As New Random
     ReadOnly player As Integer = Game.Player.Character.RelationshipGroup
 
-    Friend nearbyPeds As List(Of Ped)
+    Friend nearbyPeds As New List(Of Ped)
     Friend events As New List(Of TickEvent(Of PedScript))
 
     Public ReadOnly Property NextModel(Optional name$ = Nothing) As (name As String, model As Model)

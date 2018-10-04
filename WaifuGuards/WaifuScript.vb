@@ -80,7 +80,7 @@ Public Class WaifuScript : Inherits Script
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-15, 15), rand.Next(-15, 15), 0)
+        Return New Vector3(rand.Next(-5, 5), rand.Next(-5, 5), 0)
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
