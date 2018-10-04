@@ -14,6 +14,13 @@
             Call UI.ShowSubtitle("Assist fire!")
         End If
 
+        Dim pedTarget As Ped = target
+
+        ' Not shoot my guards
+        If script.waifuGuards.Any(Function(w) w = pedTarget) Then
+            Return
+        End If
+
         For Each waifu As Waifu In script.waifuGuards.Where(Function(w) w.IsAvailable)
             Call waifu.TakeAction(
                 Sub(actions As Tasks)

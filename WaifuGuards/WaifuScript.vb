@@ -197,7 +197,7 @@ Public Class WaifuScript : Inherits Script
                 ElseIf distance > 30 Then
                     Call waifu.TakeAction(
                         Sub(actions As Tasks)
-                            Call actions.ClearAllImmediately()
+                            ' Call actions.ClearAllImmediately()
                             Call actions.RunTo(Game.Player.Character.Position)
                         End Sub)
                 End If
