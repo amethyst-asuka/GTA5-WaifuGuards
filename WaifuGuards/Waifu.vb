@@ -41,7 +41,7 @@ Public Class Waifu
     ''' <returns></returns>
     Public ReadOnly Property IsAvailable As Boolean
         Get
-            Return Not obj.IsDead AndAlso obj.IsInCombat
+            Return Not obj.IsDead AndAlso Not obj.IsInCombat
         End Get
     End Property
 
