@@ -28,7 +28,7 @@ Public Class WaifuScript : Inherits Script
         If WaifuList.IsWaifusMegaPackInstalled Then
             Call events.Add(New FollowPlayer)
             Call events.Add(New AssistPlayer)
-            Call events.Add(New StopAttackPartner)
+            ' Call events.Add(New StopAttackPartner)
         Else
             ' Given warning message
             UI.ShowSubtitle("[Waifus mega pack] not found, you can download this mod from: https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz")
@@ -220,7 +220,9 @@ Public Class WaifuScript : Inherits Script
                     If Not target Is Nothing AndAlso target.IsDead Then
                         Call waifu.TakeAction(
                             Sub(actions As Tasks)
-                                Call actions.ClearAllImmediately()
+                                ' This function still caused the ped stop unexpected
+                                ' Call actions.ClearAllImmediately()
+                                Call actions.ClearAll()
 
                                 If Not nearby Is Nothing Then
                                     Call actions.FightAgainst(nearby)
