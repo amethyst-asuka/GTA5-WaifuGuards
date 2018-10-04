@@ -226,16 +226,20 @@ Public Class WaifuScript : Inherits Script
                                     Call actions.FightAgainst(nearby)
                                 End If
                             End Sub)
-                    ElseIf Not target Is Nothing AndAlso waifu.DistanceTo(target) > 50 Then
-                        ' If too far away with the target, given up fight with him
-                        Call waifu.TakeAction(
-                            Sub(actions As Tasks)
-                                Call actions.ClearAllImmediately()
 
-                                If Not nearby Is Nothing Then
-                                    Call actions.FightAgainst(nearby)
-                                End If
-                            End Sub)
+                        ' not working as expected....
+                        ' the code is also cause the ped freezed
+
+                        ' ElseIf Not target Is Nothing AndAlso waifu.DistanceTo(target) > 50 Then
+                        ' If too far away with the target, given up fight with him
+                        'Call waifu.TakeAction(
+                        '    Sub(actions As Tasks)
+                        '        Call actions.ClearAllImmediately()
+
+                        '        If Not nearby Is Nothing Then
+                        '            Call actions.FightAgainst(nearby)
+                        '        End If
+                        '    End Sub)
                     End If
                 End If
             Else
