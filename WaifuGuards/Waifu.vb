@@ -12,24 +12,30 @@ Public Class Waifu
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property Name As String
+
     Public ReadOnly Property IsInCombat As Boolean
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
             Return obj.IsInCombat
         End Get
     End Property
+
     Public ReadOnly Property DistanceToPlayer As Double
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
             Return Game.Player.Character.Position.DistanceTo(obj.Position)
         End Get
     End Property
 
     Public ReadOnly Property IsDead As Boolean
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
             Return obj.IsDead
         End Get
     End Property
 
     Public ReadOnly Property IsShootByPlayer As Boolean
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
             Return Game.Player.Character.IsShooting AndAlso Game.Player.IsTargetting(obj)
         End Get
@@ -40,6 +46,7 @@ Public Class Waifu
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property IsAvailable As Boolean
+        <MethodImpl(MethodImplOptions.AggressiveInlining)>
         Get
             Return Not obj.IsDead AndAlso Not obj.IsInCombat
         End Get
@@ -89,7 +96,6 @@ Public Class Waifu
     Public Sub StopAttack(target As Ped)
         If obj.IsInCombatAgainst(target) Then
             Call obj.Task.ClearAllImmediately()
-            ' Call obj.Task.AimAt(target, 1)
         End If
     End Sub
 
@@ -107,7 +113,6 @@ Public Class Waifu
 
     Public Sub Delete()
         Call script.waifuGuards.Remove(Me)
-        ' Call script.guards.Remove(obj)
         Call obj.Delete()
     End Sub
 

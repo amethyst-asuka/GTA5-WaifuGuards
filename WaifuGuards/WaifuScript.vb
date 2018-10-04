@@ -63,7 +63,7 @@ Public Class WaifuScript : Inherits Script
                     End With
 
                     If toggleGangGroupMode Then
-                        Call AddGangGroup(waifuPed, name)
+                        Call AddToGangGroup(waifuPed, name)
                     End If
                 End Sub)
 
@@ -71,7 +71,7 @@ Public Class WaifuScript : Inherits Script
         End If
     End Sub
 
-    Private Sub AddGangGroup(waifuPed As Ped, name$)
+    Private Sub AddToGangGroup(waifuPed As Ped, name$)
         Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
         Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
         Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
@@ -170,7 +170,7 @@ Public Class WaifuScript : Inherits Script
            .Where(Function(p)
                       Dim isPlayer As Boolean = Game.Player.Character Is p
                       Dim isWaifu As Boolean = waifuGuards.Any(Function(waifu) waifu = p)
-                      Return Not isPlayer AndAlso p.IsInCombat AndAlso Not isWaifu
+                      Return (Not isPlayer) AndAlso p.IsInCombat AndAlso (Not isWaifu)
                   End Function) _
            .FirstOrDefault
 
