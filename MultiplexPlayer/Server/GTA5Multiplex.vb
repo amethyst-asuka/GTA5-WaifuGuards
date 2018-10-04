@@ -1,4 +1,5 @@
-﻿Imports GTA5.Multiplex
+﻿Imports System.Runtime.CompilerServices
+Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
@@ -18,8 +19,19 @@ Public Class GTA5Multiplex
 
     End Sub
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function Run() As Integer
         Return socket.Run
+    End Function
+
+    <Protocol(PlayerControls.Protocols.CreatePlayer)>
+    Public Function CreatePlayer(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
+
+    End Function
+
+    <Protocol(PlayerControls.Protocols.PlayerMessage)>
+    Public Function PlayerMessage(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
+
     End Function
 
     <Protocol(PlayerControls.Protocols.ShootAt)>
