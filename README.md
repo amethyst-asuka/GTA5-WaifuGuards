@@ -37,8 +37,8 @@ And then save this text file to the same location of the file ``WaifuGuards.dll`
 + Latest scripthookvdotnet: https://www.gta5-mods.com/tools/scripthookv-net
 + Waifus Mega Pack(optional): https://zh.gta5-mods.com/player/lolis-and-waifus-mega-pack-blz
 
+> Spawn a waifu as your bodyguard required a game character model, this script didn't provides any game character model data, but it contains a model name list from ``Waifus Mega Pack`` mod by default. If the ``Waifus Mega Pack`` haven't installed in your GTAV game yet, and the ``waifus.txt`` is not presented in the ``script`` folder, then this script will not spawn any bodyguards. If you want to spawn a custom set of model, write your model name into the ``waifus.txt`` file.
+
 ## A Known Bug
 
 Due to the reason of ``scripthookvdotnet`` have a known bug that scripts' peds relation group hash native function call is conflicts with the [Enhanced Native Trainer](https://www.gta5-mods.com/scripts/enhanced-native-trainer): there is some settings from the ``Enhanced Native Trainer`` will caused your guard relationship broken. So if you have found your guard start to attack you or killing each other, please ``Reset All Settings`` in ``Enhanced Native Trainer`` at first, this operation will resolve the bug.
-
-Spawn a waifu as your bodyguard required a game character model, this script didn't provides any game character model data, but it contains a model name list from ``Waifus Mega Pack`` mod by default. If the ``Waifus Mega Pack`` haven't installed in your GTAV game yet, and the ``waifus.txt`` is not presented in the ``script`` folder, then this script will not spawn any bodyguards. If you want to spawn a custom set of model, write your model name into the ``waifus.txt`` file.
