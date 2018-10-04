@@ -32,7 +32,8 @@ Module WaifuList
         If File.Exists(waifus) Then
             Return File.ReadAllLines(waifus) _
                 .Where(Function(s) Not String.IsNullOrWhiteSpace(s)) _
-                .ToArray
+                .ToArray _
+                .Append(defaultWaifus)
         Else
             Return defaultWaifus
         End If

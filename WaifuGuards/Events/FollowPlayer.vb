@@ -13,6 +13,8 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
     End Sub
 
     Public Shared Sub PlayerUnion(script As WaifuScript, skipAssert As Func(Of Waifu, Boolean))
+        Dim playerOutOfVehicle As Boolean = Not Game.Player.Character.IsInVehicle
+
         For Each waifu As Waifu In script.waifuGuards
             If True = skipAssert(waifu) Then
                 Continue For
@@ -29,15 +31,24 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
                     End Sub)
             End If
 
-            If waifu.DistanceToPlayer >= 10 Then
+            If waifu.DistanceToPlayer >= 20 Then
                 Call waifu.TakeAction(
                     Sub(action As Tasks)
-                        Call action.RunTo(Game.Player.Character.Position, False)
+                        Call action.RunTo(Game.Player.Character.Position - offset, False)
                     End Sub)
-            Else
+            ElseIf waifu.DistanceToPlayer >= 10 Then
                 Call waifu.TakeAction(
                     Sub(action As Tasks)
                         Call action.GoTo(Game.Player.Character, offset)
+                    End Sub)
+            Else
+                ' too close, do nothing
+            End If
+
+            If playerOutOfVehicle AndAlso waifu.IsInVehicle Then
+                Call waifu.TakeAction(
+                    Sub(actions As Tasks)
+                        Call actions.LeaveVehicle()
                     End Sub)
             End If
         Next

@@ -22,6 +22,7 @@ Public Class WaifuScript : Inherits Script
     Friend ReadOnly pendingQueue As New PendingQueue(Of WaifuScript)
 
     Dim toggleKillable As Boolean = False
+    Dim toggleGangGroupMode As Boolean = False
 
     Sub New()
         If WaifuList.IsWaifusMegaPackInstalled Then
@@ -61,23 +62,31 @@ Public Class WaifuScript : Inherits Script
                         .Color = BlipColor.Blue
                     End With
 
-                    Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
-                    Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
-                    Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
-
-                    Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
-                    Call waifuPed.Task.ClearAllImmediately()
-                    Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
-                    Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
+                    If toggleGangGroupMode Then
+                        Call AddToGangGroup(waifuPed, name)
+                    End If
                 End Sub)
 
             Call waifuGuards.Add(waifu)
         End If
     End Sub
 
+    Private Sub AddToGangGroup(waifuPed As Ped, name$)
+        Dim myHandle = New InputArgument() {Game.Player.Character.Handle}
+        Dim myHash% = [Function].Call(Of Integer)(Hash._0xF162E133B4E7A675, myHandle)
+        Dim myGuard = New InputArgument() {waifuPed.Handle, myHash}
+
+        Call [Function].Call(Hash._0x9F3480FE65DB31B5, myGuard)
+        Call waifuPed.Task.ClearAllImmediately()
+        Call [Function].Call(Hash._0x4CF5F55DAC3280A0, New InputArgument() {waifuPed, &HC350, 0})
+        Call [Function].Call(Hash._0x971D38760FBC02EF, New InputArgument() {waifuPed, 1})
+
+        Call UI.ShowSubtitle($"Bring [{name}] as one of your group member.")
+    End Sub
+
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Public Function offsetAroundMe()
-        Return New Vector3(rand.Next(-5, 5), rand.Next(-5, 5), 0)
+    Public Function offsetAroundMe() As Vector3
+        Return New Vector3(rand.Next(-10, 10), rand.Next(-10, 10), 0)
     End Function
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
@@ -112,24 +121,38 @@ Public Class WaifuScript : Inherits Script
         ElseIf e.KeyCode = Keys.Delete Then
             toggleKillable = Not toggleKillable
         ElseIf e.KeyCode = Keys.E Then
-            Dim vehicle = World.GetClosestVehicle(Game.Player.Character.Position, 10)
+            Dim vehicle = World.GetClosestVehicle(Game.Player.Character.Position, 20)
 
+            ' Calls closest enter your vehicle
             If Not vehicle Is Nothing AndAlso Game.Player.Character.IsInVehicle(vehicle) Then
                 Dim minDistanceWaifu = waifuGuards _
+                    .Where(Function(w)
+                               ' try to make all waifus enter your bus
+                               Return Not w.IsInVehicle(vehicle)
+                           End Function) _
                     .OrderBy(Function(w) w.DistanceToPlayer) _
                     .FirstOrDefault
 
                 If Not minDistanceWaifu Is Nothing Then
                     Call minDistanceWaifu.TakeAction(
                         Sub(actions As Tasks)
-                            Call actions.ClearAllImmediately()
+                            Call UI.ShowSubtitle($"[{minDistanceWaifu.Name}], get into my vehicle.")
+
+                            If minDistanceWaifu.IsInCombat Then
+                                Call actions.ClearAllImmediately()
+                            End If
+
                             Call actions.EnterVehicle(vehicle, VehicleSeat.Passenger)
                         End Sub)
                 End If
             End If
         ElseIf e.KeyCode = Keys.I Then
-            toggleIdleCameraOn = Not toggleIdleCameraOn
-            Game.Player.Character.FreezePosition = toggleIdleCameraOn
+            ' toggleIdleCameraOn = Not toggleIdleCameraOn
+            ' Game.Player.Character.FreezePosition = toggleIdleCameraOn
+            ' toggleGangGroupMode = Not toggleGangGroupMode
+
+            ' Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
+
         ElseIf e.KeyCode = Keys.Add Then
             If toggleIdleCameraOn Then
                 Dim pos = Game.Player.Character.Position
@@ -156,7 +179,7 @@ Public Class WaifuScript : Inherits Script
            .Where(Function(p)
                       Dim isPlayer As Boolean = Game.Player.Character Is p
                       Dim isWaifu As Boolean = waifuGuards.Any(Function(waifu) waifu = p)
-                      Return Not isPlayer AndAlso p.IsInCombat AndAlso Not isWaifu
+                      Return (Not isPlayer) AndAlso p.IsInCombat AndAlso (Not isWaifu)
                   End Function) _
            .FirstOrDefault
 
@@ -177,15 +200,47 @@ Public Class WaifuScript : Inherits Script
                 ' removes too far away peds for release memory
                 Dim distance# = waifu.DistanceToPlayer
 
-                If distance > 400 Then
+                If distance > 200 Then
                     Call UI.ShowSubtitle($"Delete [{waifu.Name}]: Too far away from you.")
                     Call waifu.Delete()
-                ElseIf distance > 40 Then
-                    Call waifu.TakeAction(
-                        Sub(actions As Tasks)
-                            Call actions.ClearAllImmediately()
-                            Call actions.RunTo(Game.Player.Character.Position)
-                        End Sub)
+                ElseIf distance > 30 Then
+                    ' not working as expected....
+                    ' the code cause the ped freezed
+                    '
+                    ' Call waifu.TakeAction(
+                    '     Sub(actions As Tasks)
+                    '         ' Call actions.ClearAllImmediately()
+                    '         Call actions.RunTo(Game.Player.Character.Position)
+                    '     End Sub)
+                End If
+
+                If waifu.IsInCombat Then
+                    Dim target As Ped = waifu.Target
+
+                    If Not target Is Nothing AndAlso target.IsDead Then
+                        Call waifu.TakeAction(
+                            Sub(actions As Tasks)
+                                Call actions.ClearAllImmediately()
+
+                                If Not nearby Is Nothing Then
+                                    Call actions.FightAgainst(nearby)
+                                End If
+                            End Sub)
+
+                        ' not working as expected....
+                        ' the code is also cause the ped freezed
+
+                        ' ElseIf Not target Is Nothing AndAlso waifu.DistanceTo(target) > 50 Then
+                        ' If too far away with the target, given up fight with him
+                        'Call waifu.TakeAction(
+                        '    Sub(actions As Tasks)
+                        '        Call actions.ClearAllImmediately()
+
+                        '        If Not nearby Is Nothing Then
+                        '            Call actions.FightAgainst(nearby)
+                        '        End If
+                        '    End Sub)
+                    End If
                 End If
             Else
                 If Not waifu.MarkDeletePending Then
