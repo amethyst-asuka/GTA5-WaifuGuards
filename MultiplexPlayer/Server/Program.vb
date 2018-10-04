@@ -10,6 +10,6 @@ Module Program
     <ExportAPI("/Run")>
     <Usage("/Run [/port <listen port, default=22335>]")>
     Public Function Run(args As CommandLine) As Integer
-        Dim port% = args("/port") Or 22335
+        Return New GTA5Multiplex(port:=args("/port") Or 22335).Run
     End Function
 End Module
