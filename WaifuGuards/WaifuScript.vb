@@ -151,7 +151,7 @@ Public Class WaifuScript : Inherits Script
             ' Game.Player.Character.FreezePosition = toggleIdleCameraOn
             ' toggleGangGroupMode = Not toggleGangGroupMode
 
-            ' Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
+            'Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
 
         ElseIf e.KeyCode = Keys.Add Then
             If toggleIdleCameraOn Then
