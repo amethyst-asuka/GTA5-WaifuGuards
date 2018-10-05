@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports System.Threading
 Imports GTA5.Multiplex
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.Net.Http
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
@@ -14,9 +15,8 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 ''' </summary>
 ''' 
 <Protocol(GetType(CSNetwork.Protocols))>
-Public Class UsersMgr
+Public Class UsersMgr : Inherits ServerModule
 
-    ReadOnly socket As TcpServicesSocket
     ''' <summary>
     ''' For message broadcast and message push
     ''' </summary>
@@ -24,20 +24,23 @@ Public Class UsersMgr
     ReadOnly users As Dictionary(Of String, NetworkUser)
 
     Sub New(Optional port% = 22336, Optional messageChannel% = 22337)
-        socket = New TcpServicesSocket(port, AddressOf LogException) With {
-            .Responsehandler = New ProtocolHandler(Me)
-        }
+        Call MyBase.New(port)
+
         messageServer = New ServicesSocket(messageChannel, AddressOf LogException) With {
             .AcceptCallbackHandleInvoke = AddressOf RegisterService
         }
     End Sub
 
-    Private Shared Sub LogException(ex As Exception)
+    Protected Overrides Sub LogException(ex As Exception)
 
     End Sub
 
+    Protected Overrides Function ProtocolHandler() As ProtocolHandler
+        Return New ProtocolHandler(Me)
+    End Function
+
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
-    Public Function Run() As Integer
+    Public Overrides Function Run() As Integer
         Call New ThreadStart(AddressOf messageServer.Run).RunTask
         Return socket.Run
     End Function
