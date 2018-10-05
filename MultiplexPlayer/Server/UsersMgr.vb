@@ -52,3 +52,17 @@ Public Class UsersMgr
 
     End Function
 End Class
+
+Public Class NetworkUser : Inherits GTA5.Multiplex.NetworkUser
+
+    Public ReadOnly Property CheckSum As Integer
+
+    Private Function NextCheckSum() As Integer
+        Static rand As New Random
+
+        SyncLock rand
+            Return rand.Next(0, 999999)
+        End SyncLock
+    End Function
+
+End Class

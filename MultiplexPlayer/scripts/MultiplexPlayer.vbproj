@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2113DE5C-ABD3-4F25-870E-502D64244EC4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>MultiplexPlayer</RootNamespace>
+    <RootNamespace>GTA5.Multiplex.PlayerScripts</RootNamespace>
     <AssemblyName>MultiplexPlayer</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
