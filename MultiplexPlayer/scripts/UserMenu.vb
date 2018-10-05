@@ -2,8 +2,8 @@
 Imports GTA
 Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Language
-Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Protocols
+Imports Microsoft.VisualBasic.Net.Tcp
 
 Public Class UserMenu : Inherits Script
 

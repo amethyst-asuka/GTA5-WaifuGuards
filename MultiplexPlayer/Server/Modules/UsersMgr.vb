@@ -1,11 +1,11 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports System.Threading
 Imports GTA5.Multiplex
-Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Http
-Imports Microsoft.VisualBasic.Net.Persistent.Socket
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
+Imports Microsoft.VisualBasic.Net.Tcp
+Imports Microsoft.VisualBasic.Net.Tcp.Persistent.Socket
 Imports Microsoft.VisualBasic.Parallel
 Imports Microsoft.VisualBasic.Serialization.JSON
 

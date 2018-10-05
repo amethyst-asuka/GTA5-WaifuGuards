@@ -1,9 +1,9 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports System.Threading
 Imports GTA5.Multiplex
-Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
+Imports Microsoft.VisualBasic.Net.Tcp
 Imports Microsoft.VisualBasic.Parallel
 
 <Protocol(GetType(PlayerControls.Protocols))>
