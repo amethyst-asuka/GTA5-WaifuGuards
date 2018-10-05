@@ -39,6 +39,13 @@ Public Class UsersMgr
 
     End Function
 
+    ''' <summary>
+    ''' Brocast message to other player and let system take over the player character 
+    ''' and make it as a normal pedestrian?
+    ''' </summary>
+    ''' <param name="request"></param>
+    ''' <param name="RemoteAddress"></param>
+    ''' <returns></returns>
     <Protocol(CSNetwork.Protocols.LogOut)>
     Public Function LogOut(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
 
