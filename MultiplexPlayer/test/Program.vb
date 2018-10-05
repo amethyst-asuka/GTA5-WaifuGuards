@@ -5,6 +5,6 @@ Module Program
     Sub Main()
         Dim user As New UserMenu
 
-
+        Call user.LogIn()
     End Sub
 End Module
