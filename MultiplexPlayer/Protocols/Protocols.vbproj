@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Models.vb" />
     <Compile Include="CSNetwork.vb" />
+    <Compile Include="Extensions.vb" />
     <Compile Include="PlayerControls.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
