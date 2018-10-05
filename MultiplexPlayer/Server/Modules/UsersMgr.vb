@@ -16,7 +16,7 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 <Protocol(GetType(CSNetwork.Protocols))>
 Public Class UsersMgr
 
-    ReadOnly socket As TcpSynchronizationServicesSocket
+    ReadOnly socket As TcpServicesSocket
     ''' <summary>
     ''' For message broadcast and message push
     ''' </summary>
@@ -24,7 +24,7 @@ Public Class UsersMgr
     ReadOnly users As Dictionary(Of String, NetworkUser)
 
     Sub New(Optional port% = 22336, Optional messageChannel% = 22337)
-        socket = New TcpSynchronizationServicesSocket(port, AddressOf LogException) With {
+        socket = New TcpServicesSocket(port, AddressOf LogException) With {
             .Responsehandler = New ProtocolHandler(Me)
         }
         messageServer = New ServicesSocket(messageChannel, AddressOf LogException) With {

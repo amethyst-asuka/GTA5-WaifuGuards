@@ -9,11 +9,11 @@ Imports Microsoft.VisualBasic.Parallel
 <Protocol(GetType(PlayerControls.Protocols))>
 Public Class GTA5Multiplex
 
-    ReadOnly socket As TcpSynchronizationServicesSocket
+    ReadOnly socket As TcpServicesSocket
     ReadOnly users As UsersMgr
 
     Sub New(Optional port% = 22335, Optional userPort% = 22336)
-        socket = New TcpSynchronizationServicesSocket(port, AddressOf LogException) With {
+        socket = New TcpServicesSocket(port, AddressOf LogException) With {
             .Responsehandler = New ProtocolHandler(Me)
         }
         users = New UsersMgr(userPort)
