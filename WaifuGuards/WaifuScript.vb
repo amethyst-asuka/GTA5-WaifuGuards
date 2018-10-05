@@ -145,6 +145,9 @@ Public Class WaifuScript : Inherits Script
                             Call actions.EnterVehicle(vehicle, VehicleSeat.Passenger)
                         End Sub)
                 End If
+            Else
+                ' play an emotion to a waifu who is in front of you
+                ' Game.Player.Character.Task.PlayAnimation()
             End If
         ElseIf e.KeyCode = Keys.I Then
             ' toggleIdleCameraOn = Not toggleIdleCameraOn
