@@ -74,3 +74,10 @@ Public Class NetworkUser : Implements INamedValue
     Public Property ModelName As String
 
 End Class
+
+Public Class ServiceRegister
+
+    Public Property Guid As String
+    Public Property Socket As Integer
+
+End Class

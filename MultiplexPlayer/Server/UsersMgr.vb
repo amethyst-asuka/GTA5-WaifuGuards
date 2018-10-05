@@ -70,9 +70,32 @@ Public Class UsersMgr
     ''' <returns></returns>
     <Protocol(CSNetwork.Protocols.RegisterService)>
     Public Function RegisterService(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
+        Dim msg As Message(Of ServiceRegister) = request.LoadObject(AddressOf LoadJSON(Of Message(Of ServiceRegister)))
 
+        If msg.CheckSum <> users(msg.Guid).CheckSum Then
+            Return RequestStream.SystemProtocol(RequestStream.Protocols.InvalidCertificates, "Mismatched checksum")
+        Else
+            With users(msg.Guid)
+                ' Establish links between user and the services socket
+                .SocketId = msg.Msg.Socket
+                .UpdateCheckSum()
+            End With
+        End If
+
+        Dim OK As New Message(Of String) With {
+            .CheckSum = users(msg.Guid).CheckSum,
+            .Msg = "OK!"
+        }
+
+        Return RequestStream.CreatePackage(OK)
     End Function
 
+    ''' <summary>
+    ''' The multiplex network protocol initiator
+    ''' </summary>
+    ''' <param name="request"></param>
+    ''' <param name="RemoteAddress"></param>
+    ''' <returns></returns>
     <Protocol(CSNetwork.Protocols.Ping)>
     Public Function Ping(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
         Dim userId As String = requestNewGuid()
@@ -131,7 +154,7 @@ Public Class UsersMgr
     End Function
 
     ''' <summary>
-    ''' Brocast message to other player and let system take over the player character 
+    ''' Broadcast message to other player and let system take over the player character 
     ''' and make it as a normal pedestrian?
     ''' </summary>
     ''' <param name="request"></param>
@@ -180,6 +203,9 @@ Public Class NetworkUser : Inherits GTA5.Multiplex.NetworkUser
         CheckSum = NextCheckSum()
     End Sub
 
+    ''' <summary>
+    ''' Update checksum to a new random number for the validation
+    ''' </summary>
     Public Sub UpdateCheckSum()
         _CheckSum = NextCheckSum()
     End Sub
