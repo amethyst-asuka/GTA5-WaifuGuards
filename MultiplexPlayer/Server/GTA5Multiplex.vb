@@ -1,18 +1,22 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports System.Threading
 Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
+Imports Microsoft.VisualBasic.Parallel
 
 <Protocol(GetType(PlayerControls.Protocols))>
 Public Class GTA5Multiplex
 
     ReadOnly socket As TcpSynchronizationServicesSocket
+    ReadOnly users As UsersMgr
 
-    Sub New(Optional port% = 22335)
+    Sub New(Optional port% = 22335, Optional userPort% = 22336)
         socket = New TcpSynchronizationServicesSocket(port, AddressOf LogException) With {
             .Responsehandler = New ProtocolHandler(Me)
         }
+        users = New UsersMgr(userPort)
     End Sub
 
     Private Shared Sub LogException(ex As Exception)
@@ -21,6 +25,7 @@ Public Class GTA5Multiplex
 
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function Run() As Integer
+        Call New ThreadStart(AddressOf users.Run).RunTask
         Return socket.Run
     End Function
 

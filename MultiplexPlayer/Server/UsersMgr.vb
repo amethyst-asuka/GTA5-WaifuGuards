@@ -41,6 +41,8 @@ Public Class UsersMgr
                 End With
             Loop
         End SyncLock
+
+        Throw New Exception("This exception will never happends.")
     End Function
 
     <Protocol(CSNetwork.Protocols.Ping)>
@@ -89,7 +91,18 @@ Public Class UsersMgr
     ''' <returns></returns>
     <Protocol(CSNetwork.Protocols.LogOut)>
     Public Function LogOut(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
+        Dim msg As Message(Of String) = request.LoadObject(AddressOf LoadJSON(Of Message(Of String)))
 
+        If msg.CheckSum <> users(msg.Guid).CheckSum Then
+            Return RequestStream.SystemProtocol(RequestStream.Protocols.InvalidCertificates, "Mismatched checksum")
+        Else
+            ' delete user from server memory
+            SyncLock users
+                Call users.Remove(msg.Guid)
+            End SyncLock
+        End If
+
+        Return RequestStream.SystemProtocol(RequestStream.Protocols.OK, "OK!")
     End Function
 End Class
 
