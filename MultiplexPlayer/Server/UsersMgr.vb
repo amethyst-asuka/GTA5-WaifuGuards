@@ -59,7 +59,7 @@ Public Class UsersMgr
             .Msg = socket.GetHashCode,
             .CheckSum = HTTP_RFC.RFC_OK
         }
-        Call socket.SendMessage(RequestStream.CreatePackage(registerMsg))
+        Call socket.PushMessage(RequestStream.CreatePackage(registerMsg))
     End Sub
 
     ''' <summary>
@@ -144,7 +144,7 @@ Public Class UsersMgr
         Call messageServer _
             .Connections _
             .ForEach(Sub(userSocket, i)
-                         Call userSocket.SendMessage(loginBroadCast)
+                         Call userSocket.PushMessage(loginBroadCast)
                      End Sub)
 
         Return RequestStream.CreatePackage(New Message(Of String) With {
@@ -187,7 +187,7 @@ Public Class UsersMgr
         Call messageServer _
             .Connections _
             .ForEach(Sub(userSocket, i)
-                         Call userSocket.SendMessage(logoutBroadCast)
+                         Call userSocket.PushMessage(logoutBroadCast)
                      End Sub)
 
         Return RequestStream.SystemProtocol(RequestStream.Protocols.OK, "OK!")
