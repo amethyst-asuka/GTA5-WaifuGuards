@@ -56,12 +56,28 @@ Public Class UsersMgr
         }
         users(userId) = user
 
-        Return New RequestStream(msg.GetJson)
+        Return RequestStream.CreatePackage(msg)
     End Function
 
     <Protocol(CSNetwork.Protocols.LogIn)>
     Public Function LogIn(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
+        Dim msg As Message(Of GTA5.Multiplex.NetworkUser) = request.LoadObject(AddressOf LoadJSON(Of Message(Of GTA5.Multiplex.NetworkUser)))
 
+        If msg.CheckSum <> users(msg.Guid).CheckSum Then
+            Return RequestStream.SystemProtocol(RequestStream.Protocols.InvalidCertificates, "Mismatched checksum")
+        Else
+            With users(msg.Guid)
+                .ModelName = msg.Msg.ModelName
+                .Name = msg.Msg.Name
+
+                Call .UpdateCheckSum()
+            End With
+        End If
+
+        Return RequestStream.CreatePackage(New Message(Of String) With {
+            .CheckSum = users(msg.Guid).CheckSum,
+            .Msg = "OK!"
+        })
     End Function
 
     ''' <summary>
@@ -83,6 +99,10 @@ Public Class NetworkUser : Inherits GTA5.Multiplex.NetworkUser
 
     Sub New()
         CheckSum = NextCheckSum()
+    End Sub
+
+    Public Sub UpdateCheckSum()
+        _CheckSum = NextCheckSum()
     End Sub
 
     Private Function NextCheckSum() As Integer
