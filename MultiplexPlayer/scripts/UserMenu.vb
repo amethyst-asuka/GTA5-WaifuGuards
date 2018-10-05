@@ -13,6 +13,17 @@ Public Class UserMenu : Inherits Script
     Dim gameServer As AsynInvoke, userServer As AsynInvoke
     Dim user As NetworkUser
 
+    Sub New()
+#If DEBUG Then
+        gameServer = New AsynInvoke("127.0.0.1", 22335)
+        userServer = New AsynInvoke("127.0.0.1", 22336)
+        user = New NetworkUser With {
+            .ModelName = "testxxx",
+            .Name = "12345"
+        }
+#End If
+    End Sub
+
 #Region "Menu Item"
 
     ''' <summary>
