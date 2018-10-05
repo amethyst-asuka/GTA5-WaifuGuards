@@ -6,10 +6,10 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
 
     Dim rand As New Random
     Dim peds As New List(Of Ped)
-    Dim plus10 As Boolean = False
     Dim explodeds As New List(Of Ped)
+    Dim deathDelQueue As New PendingQueue(Of PedScript)
 
-    Const MaxAttacks% = 20
+    Const MaxAttacks% = 30
     Const SpawnRadius% = 30
 
     Public Sub New()
@@ -81,19 +81,26 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
             End With
         End If
 
-        If plus10 Then
-            For Each dead As Ped In peds.Where(Function(p) p.IsDead).ToArray
-                If explodeds.IndexOf(dead) > -1 Then
-                    explodeds.Remove(dead)
-                    World.AddExplosion(dead.Position, ExplosionType.GasTank, 30, 8)
-                End If
+        For Each dead As Ped In peds.Where(Function(p) p.IsDead)
+            Dim action As Action(Of PedScript) =
+                Sub()
+                    If peds.IndexOf(dead) = -1 Then
+                        ' is already been deleted
+                        Return
+                    End If
 
-                Call peds.Remove(dead)
-                Call dead.Delete()
-            Next
-        End If
+                    If explodeds.IndexOf(dead) > -1 Then
+                        explodeds.Remove(dead)
+                        World.AddExplosion(dead.Position, ExplosionType.GasTank, 20, 5)
+                    End If
 
-        plus10 = Not plus10
+                    Call peds.Remove(dead)
+                    Call dead.Delete()
+                End Sub
+            Dim del As New PendingEvent(Of PedScript)(New TimeSpan(0, 0, 3), action)
+
+            Call deathDelQueue.Add(del)
+        Next
 
         For Each ped As Ped In peds
             If Not ped.IsInCombat Then
@@ -111,18 +118,23 @@ Public Class AttackEvent : Inherits TickEvent(Of PedScript)
     Public Overrides Sub Tick(script As PedScript)
         Call MyBase.Tick(script)
         Call explosionNearbyPlayerImmediately()
+        Call deathDelQueue.Tick(script)
     End Sub
 
     Private Sub explosionNearbyPlayerImmediately()
         For Each ped As Ped In peds.Where(Function(p) Not p.IsDead)
             Dim distance = Game.Player.Character.Position.DistanceTo(ped.Position)
 
-            If distance <= 10 AndAlso explodeds.IndexOf(ped) > -1 Then
-                Call ped.Kill()
-                Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 30, 8)
-                Call peds.Remove(ped)
-                Call explodeds.Remove(ped)
-                Call ped.Delete()
+            If distance <= 5 AndAlso explodeds.IndexOf(ped) > -1 Then
+                Try
+                    Call World.AddExplosion(ped.Position, ExplosionType.GasTank, 20, 5)
+                    Call ped.Kill()
+                    Call peds.Remove(ped)
+                    Call explodeds.Remove(ped)
+                    Call ped.Delete()
+                Catch ex As Exception
+
+                End Try
             End If
         Next
     End Sub

@@ -1,0 +1,3 @@
+[submodule "MultiplexPlayer/VB"]
+	path = MultiplexPlayer/VB
+	url = https://github.com/xieguigang/sciBASIC-lang-core.git

@@ -36,7 +36,7 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
                     Sub(action As Tasks)
                         Call action.RunTo(Game.Player.Character.Position - offset, False)
                     End Sub)
-            ElseIf waifu.DistanceToPlayer >= 10 Then
+            ElseIf waifu.DistanceToPlayer >= 5 Then
                 Call waifu.TakeAction(
                     Sub(action As Tasks)
                         Call action.GoTo(Game.Player.Character, offset)
