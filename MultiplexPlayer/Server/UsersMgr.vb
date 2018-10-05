@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Net
+Imports Microsoft.VisualBasic.Net.Http
 Imports Microsoft.VisualBasic.Net.Persistent.Socket
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
@@ -24,7 +25,9 @@ Public Class UsersMgr
         socket = New TcpSynchronizationServicesSocket(port, AddressOf LogException) With {
             .Responsehandler = New ProtocolHandler(Me)
         }
-        messageServer = New ServicesSocket(messageChannel, AddressOf LogException)
+        messageServer = New ServicesSocket(messageChannel, AddressOf LogException) With {
+            .AcceptCallbackHandleInvoke = AddressOf RegisterService
+        }
     End Sub
 
     Private Shared Sub LogException(ex As Exception)
@@ -49,6 +52,25 @@ Public Class UsersMgr
         End SyncLock
 
         Throw New Exception("This exception will never happends.")
+    End Function
+
+    Public Sub RegisterService(socket As WorkSocket)
+        Dim registerMsg As New Message(Of Integer) With {
+            .Msg = socket.GetHashCode,
+            .CheckSum = HTTP_RFC.RFC_OK
+        }
+        Call socket.SendMessage(RequestStream.CreatePackage(registerMsg))
+    End Sub
+
+    ''' <summary>
+    ''' Write link between the user object and its service socket
+    ''' </summary>
+    ''' <param name="request"></param>
+    ''' <param name="RemoteAddress"></param>
+    ''' <returns></returns>
+    <Protocol(CSNetwork.Protocols.RegisterService)>
+    Public Function RegisterService(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
+
     End Function
 
     <Protocol(CSNetwork.Protocols.Ping)>
@@ -152,6 +174,7 @@ End Class
 Public Class NetworkUser : Inherits GTA5.Multiplex.NetworkUser
 
     Public ReadOnly Property CheckSum As Integer
+    Public Property SocketId As Integer
 
     Sub New()
         CheckSum = NextCheckSum()

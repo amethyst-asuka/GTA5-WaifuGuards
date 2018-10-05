@@ -14,6 +14,7 @@ Public Module CSNetwork
         ''' The very first step, ping the server and gets the uid from server as user id
         ''' </summary>
         Ping = 100
+        RegisterService
         LogIn = 500
         LogOut
     End Enum
