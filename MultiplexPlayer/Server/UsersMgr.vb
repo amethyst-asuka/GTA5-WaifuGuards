@@ -56,7 +56,10 @@ Public Class UsersMgr
             .Guid = userId,
             .Msg = userId
         }
-        users(userId) = user
+
+        SyncLock users
+            users(userId) = user
+        End SyncLock
 
         Return RequestStream.CreatePackage(msg)
     End Function
