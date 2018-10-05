@@ -1,24 +1,30 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Net
+Imports Microsoft.VisualBasic.Net.Persistent.Socket
 Imports Microsoft.VisualBasic.Net.Protocols
 Imports Microsoft.VisualBasic.Net.Protocols.Reflection
 Imports Microsoft.VisualBasic.Serialization.JSON
 
 ''' <summary>
-''' User Manager
+''' User Manager and message server
 ''' </summary>
 ''' 
 <Protocol(GetType(CSNetwork.Protocols))>
 Public Class UsersMgr
 
     ReadOnly socket As TcpSynchronizationServicesSocket
+    ''' <summary>
+    ''' For message broadcast and message push
+    ''' </summary>
+    ReadOnly messageServer As ServicesSocket
     ReadOnly users As Dictionary(Of String, NetworkUser)
 
-    Sub New(Optional port% = 22336)
+    Sub New(Optional port% = 22336, Optional messageChannel% = 22337)
         socket = New TcpSynchronizationServicesSocket(port, AddressOf LogException) With {
             .Responsehandler = New ProtocolHandler(Me)
         }
+        messageServer = New ServicesSocket(messageChannel, AddressOf LogException)
     End Sub
 
     Private Shared Sub LogException(ex As Exception)
@@ -79,6 +85,23 @@ Public Class UsersMgr
             End With
         End If
 
+        Dim loginMsg As New Message(Of GTA5.Multiplex.NetworkUser) With {
+            .Guid = msg.Guid,
+            .Msg = msg.Msg
+        }
+        Dim loginBroadCast As New RequestStream(
+            CSNetwork.EntryPoint,
+            CSNetwork.Protocols.LogIn,
+            loginMsg.GetJson
+        )
+
+        ' message broadcast to all users
+        Call messageServer _
+            .Connections _
+            .ForEach(Sub(userSocket, i)
+                         Call userSocket.SendMessage(loginBroadCast)
+                     End Sub)
+
         Return RequestStream.CreatePackage(New Message(Of String) With {
             .CheckSum = users(msg.Guid).CheckSum,
             .Msg = "OK!"
@@ -104,6 +127,23 @@ Public Class UsersMgr
                 Call users.Remove(msg.Guid)
             End SyncLock
         End If
+
+        Dim logoutMsg As New Message(Of String) With {
+            .Guid = msg.Guid,
+            .Msg = msg.Guid
+        }
+        Dim logoutBroadCast As New RequestStream(
+            CSNetwork.EntryPoint,
+            CSNetwork.Protocols.LogOut,
+            logoutMsg.GetJson
+        )
+
+        ' message broadcast to all users
+        Call messageServer _
+            .Connections _
+            .ForEach(Sub(userSocket, i)
+                         Call userSocket.SendMessage(logoutBroadCast)
+                     End Sub)
 
         Return RequestStream.SystemProtocol(RequestStream.Protocols.OK, "OK!")
     End Function
