@@ -1,11 +1,17 @@
-﻿Imports GTA
+﻿Imports System.Text
+Imports GTA
+Imports GTA5.Multiplex
+Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Net
+Imports Microsoft.VisualBasic.Net.Protocols
 
 Public Class UserMenu : Inherits Script
 
     Const GameServerPort% = 22335
     Const UserServerPort% = 22336
 
-    Dim gamePort%, userPort%
+    Dim gameServer As AsynInvoke, userServer As AsynInvoke
+    Dim user As NetworkUser
 
 #Region "Menu Item"
 
@@ -25,7 +31,19 @@ Public Class UserMenu : Inherits Script
     ''' Screen will fade in and your will enter the online mode
     ''' </remarks>
     Public Function LogIn() As Boolean
+        ' 1. ping server to get guid
+        Dim response As RequestStream = userServer.SendMessage(CSNetwork.Ping)
+        Dim guid$ = Encoding.ASCII.GetString(response.ChunkBuffer)
+        Dim logInRequest As RequestStream = user.LogIn
+        Dim result = userServer.SendMessage(logInRequest)
+        Dim code As int = -1
 
+        If (code = BitConverter.ToInt32(result.ChunkBuffer, Scan0)) = 200 Then
+            ' success
+            ' do screen fade in and request download your friends' game playing data.
+        Else
+            ' error
+        End If
     End Function
 
     ''' <summary>

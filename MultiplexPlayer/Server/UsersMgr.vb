@@ -13,6 +13,7 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 Public Class UsersMgr
 
     ReadOnly socket As TcpSynchronizationServicesSocket
+    ReadOnly users As Dictionary(Of String, NetworkUser)
 
     Sub New(Optional port% = 22336)
         socket = New TcpSynchronizationServicesSocket(port, AddressOf LogException) With {
