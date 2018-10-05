@@ -85,6 +85,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Message.vb" />
     <Compile Include="CSNetwork.vb" />
     <Compile Include="PlayerControls.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

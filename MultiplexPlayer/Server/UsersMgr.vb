@@ -30,9 +30,33 @@ Public Class UsersMgr
         Return socket.Run
     End Function
 
+    Private Function requestNewGuid() As String
+        SyncLock users
+            Do While True
+                With Guid.NewGuid.ToString
+                    If Not users.ContainsKey(.ToString) Then
+                        users(.ToString) = Nothing
+                        Return .ToString
+                    End If
+                End With
+            Loop
+        End SyncLock
+    End Function
+
     <Protocol(CSNetwork.Protocols.Ping)>
     Public Function Ping(request As RequestStream, RemoteAddress As System.Net.IPEndPoint) As RequestStream
-        Dim user = New IPEndPoint(RemoteAddress).GetJson.MD5
+        Dim userId As String = requestNewGuid()
+        Dim user As New NetworkUser With {
+            .Guid = userId
+        }
+        Dim msg As New Message(Of String) With {
+            .CheckSum = user.CheckSum,
+            .Guid = userId,
+            .Msg = userId
+        }
+        users(userId) = user
+
+        Return New RequestStream(msg.GetJson)
     End Function
 
     <Protocol(CSNetwork.Protocols.LogIn)>
@@ -56,6 +80,10 @@ End Class
 Public Class NetworkUser : Inherits GTA5.Multiplex.NetworkUser
 
     Public ReadOnly Property CheckSum As Integer
+
+    Sub New()
+        CheckSum = NextCheckSum()
+    End Sub
 
     Private Function NextCheckSum() As Integer
         Static rand As New Random
