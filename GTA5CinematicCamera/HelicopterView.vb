@@ -25,18 +25,28 @@ Public Class HelicopterView : Inherits Script
                 pilot = helicopter.CreatePedOnSeat(VehicleSeat.Driver, model)
                 pilot.AlwaysKeepTask = True
                 pilot.BlockPermanentEvents = True
-
-                Call Script.Wait(1000)
-
-                Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(5, 5, 10)
-                Dim followPlayer As InputArgument() = New InputArgument() {pilot, helicopter, 0, 0, abovePlayer.X, abovePlayer.Y, abovePlayer.Z, 4.0!, 100.0!, 0!, 90.0!, 0, CSng(-200)}
-                [Function].Call(Hash._0x23703CD154E83B88, followPlayer)
             Else
                 ' toggle off
                 Call camera.ExitCameraView
                 Call pilot.Delete()
                 Call helicopter.Delete()
             End If
+        End If
+    End Sub
+
+    Dim last As Date = Now
+
+    Private Sub HelicopterView_Tick(sender As Object, e As EventArgs) Handles Me.Tick
+        If (Not pilot Is Nothing) AndAlso last - Now > New TimeSpan(0, 0, 3) Then
+            Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(5, 5, 10)
+            Dim followPlayer As InputArgument() = New InputArgument() {
+                pilot, helicopter, 0, 0,
+                abovePlayer.X, abovePlayer.Y, abovePlayer.Z,
+                4.0!, 100.0!, 0!, 90.0!, 0, CSng(-200)
+            }
+
+            [Function].Call(Hash._0x23703CD154E83B88, followPlayer)
+            last = Now
         End If
     End Sub
 End Class
