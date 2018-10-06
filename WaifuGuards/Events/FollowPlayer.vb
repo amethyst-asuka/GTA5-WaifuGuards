@@ -43,6 +43,10 @@ Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
                     End Sub)
             Else
                 ' too close, do nothing
+                Call waifu.TakeAction(
+                    Sub(actions As Tasks)
+                        Call actions.WanderAround(Game.Player.Character.Position, 10)
+                    End Sub)
             End If
 
             If playerOutOfVehicle AndAlso waifu.IsInVehicle Then
