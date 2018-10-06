@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports GTA
+Imports GTA.Math
 Imports GTA.Native
 
 Public Class HelicopterView : Inherits Script
@@ -16,10 +17,15 @@ Public Class HelicopterView : Inherits Script
         If e.KeyCode = Keys.J Then
             If Not camera.IsActive Then
                 ' toggle on
-                helicopter = World.CreateVehicle
+                Dim model As New Model("annihilator")
+                Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(0, 0, 20)
+
+                helicopter = World.CreateVehicle(model, abovePlayer)
                 helicopter.AttachTo(pilot, 0)
 
-                Call camera.EnterCameraView()
+                Call camera.EnterCameraView(abovePlayer)
+                Call camera.AttachTo(helicopter, New Vector3(0, 0, -2))
+                Call camera.PointAt(Game.Player.Character)
             Else
                 ' toggle off
                 Call camera.ExitCameraView
