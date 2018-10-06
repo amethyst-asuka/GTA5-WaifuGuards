@@ -151,12 +151,15 @@ Public Class WaifuScript : Inherits Script
                 ' Game.Player.Character.Task.PlayAnimation()
             End If
         ElseIf e.KeyCode = Keys.I Then
-            ' toggleIdleCameraOn = Not toggleIdleCameraOn
-            ' Game.Player.Character.FreezePosition = toggleIdleCameraOn
-            ' toggleGangGroupMode = Not toggleGangGroupMode
-
-            'Call UI.ShowSubtitle($"Toggle gang group mode: {If(toggleGangGroupMode, "On", "Off")}.")
-
+            With TryCast(events.Where(Function(ev) TypeOf ev Is FollowPlayer).FirstOrDefault, FollowPlayer)
+                If Not .IsNothing Then
+                    If .StopFollow Then
+                        Call .Start()
+                    Else
+                        Call .Stop(waifuGuards)
+                    End If
+                End If
+            End With
         ElseIf e.KeyCode = Keys.Add Then
             If toggleIdleCameraOn Then
                 Dim pos = Game.Player.Character.Position

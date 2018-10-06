@@ -3,13 +3,32 @@ Imports GTA.Math
 
 Public Class FollowPlayer : Inherits TickEvent(Of WaifuScript)
 
+    Public ReadOnly Property StopFollow As Boolean = False
+
     Public Sub New()
         MyBase.New(New TimeSpan(0, 0, 1))
     End Sub
 
+    Public Sub Start()
+        _StopFollow = False
+    End Sub
+
+    Public Sub [Stop](waifus As IEnumerable(Of Waifu))
+        _StopFollow = True
+
+        For Each waifu In waifus
+            Call waifu.TakeAction(
+                Sub(actions As Tasks)
+                    Call actions.ClearAllImmediately()
+                End Sub)
+        Next
+    End Sub
+
     <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Protected Overrides Sub DoEvent(script As WaifuScript)
-        Call PlayerUnion(script, skipAssert:=Function(waifu) waifu.IsDead OrElse waifu.IsInCombat)
+        If Not StopFollow Then
+            Call PlayerUnion(script, skipAssert:=Function(waifu) waifu.IsDead OrElse waifu.IsInCombat)
+        End If
     End Sub
 
     Public Shared Sub PlayerUnion(script As WaifuScript, skipAssert As Func(Of Waifu, Boolean))

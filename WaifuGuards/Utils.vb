@@ -34,4 +34,9 @@ Public Module Utils
             Return .ToArray
         End With
     End Function
+
+    <Extension>
+    Public Function IsNothing(Of T As Class)(x As T) As Boolean
+        Return x Is Nothing
+    End Function
 End Module
