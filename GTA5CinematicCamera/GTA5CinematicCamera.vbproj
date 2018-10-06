@@ -112,6 +112,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraScript.vb" />
+    <Compile Include="HelicopterView.vb" />
+    <Compile Include="CameraUtils.vb" />
     <Compile Include="PointPicker.vb" />
     <Compile Include="Timer.vb" />
     <Compile Include="SplineCamera.vb" />
