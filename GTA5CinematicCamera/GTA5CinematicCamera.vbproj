@@ -112,6 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraScript.vb" />
+    <Compile Include="HelicopterView.vb" />
+    <Compile Include="CameraUtils.vb" />
+    <Compile Include="PointPicker.vb" />
+    <Compile Include="Timer.vb" />
+    <Compile Include="SplineCamera.vb" />
+    <Compile Include="Utils.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -127,10 +133,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="PointPicker.vb" />
-    <Compile Include="SplineCamera.vb" />
-    <Compile Include="Timer.vb" />
-    <Compile Include="Utils.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -150,12 +152,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WaifuGuards\WaifuGuards.vbproj">
-      <Project>{e5e767c2-933c-484e-82c7-9ab32bb0738b}</Project>
-      <Name>WaifuGuards</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
