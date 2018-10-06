@@ -6,7 +6,7 @@ Imports GTA.Native
 Public Class HelicopterView : Inherits Script
 
     Dim camera As Camera
-    Dim helicopter As Entity, pilot As Ped
+    Dim helicopter As Vehicle, pilot As Ped
 
     Sub New()
         camera = New Camera([Function].[Call](Of Integer)(Hash.CREATE_CAM, "DEFAULT_SPLINE_CAMERA", 0))
@@ -14,21 +14,27 @@ Public Class HelicopterView : Inherits Script
     End Sub
 
     Private Sub HelicopterView_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        If e.KeyCode = Keys.J Then
+        If e.KeyCode = Keys.O Then
             If Not camera.IsActive Then
                 ' toggle on
                 Dim model As New Model("annihilator")
-                Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(0, 0, 20)
+                Dim position As Vector3 = Game.Player.Character.Position + New Vector3(30, 30, 0)
 
-                helicopter = World.CreateVehicle(model, abovePlayer)
-                helicopter.AttachTo(pilot, 0)
+                helicopter = World.CreateVehicle(model, position)
+                model = New Model("rmiku2016")
+                pilot = helicopter.CreatePedOnSeat(VehicleSeat.Driver, model)
+                pilot.AlwaysKeepTask = True
+                pilot.BlockPermanentEvents = True
 
-                Call camera.EnterCameraView(abovePlayer)
-                Call camera.AttachTo(helicopter, New Vector3(0, 0, -2))
-                Call camera.PointAt(Game.Player.Character)
+                Call Script.Wait(1000)
+
+                Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(5, 5, 10)
+                Dim followPlayer As InputArgument() = New InputArgument() {pilot, helicopter, 0, 0, abovePlayer.X, abovePlayer.Y, abovePlayer.Z, 4.0!, 100.0!, 0!, 90.0!, 0, CSng(-200)}
+                [Function].Call(Hash._0x23703CD154E83B88, followPlayer)
             Else
                 ' toggle off
                 Call camera.ExitCameraView
+                Call pilot.Delete()
                 Call helicopter.Delete()
             End If
         End If
