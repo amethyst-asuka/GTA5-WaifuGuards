@@ -32,45 +32,25 @@ Public Class SplineCamera
                           3, 2)
     End Sub
 
-    Public Sub EnterCameraView(position As Vector3)
-        [Function].[Call](Hash.DO_SCREEN_FADE_OUT, 1200)
-        Script.Wait(1100)
-        MainCamera.Position = position
-        MainCamera.IsActive = True
-        World.RenderingCamera = MainCamera
-        Script.Wait(100)
-        [Function].[Call](Hash.DO_SCREEN_FADE_IN, 800)
-    End Sub
-
-    Public Sub ExitCameraView()
-        [Function].[Call](Hash.DO_SCREEN_FADE_OUT, 1200)
-        Script.Wait(1100)
-        MainCamera.IsActive = False
-        World.RenderingCamera = Nothing
-        Script.Wait(100)
-        [Function].[Call](Hash.CLEAR_FOCUS)
-        [Function].[Call](Hash.DO_SCREEN_FADE_IN, 800)
-    End Sub
-
     Public Sub Update()
         If MainCamera.IsActive Then
             If _renderSceneTimer.Enabled AndAlso Game.GameTime > _renderSceneTimer.Waiter Then
-                [Function].[Call](Hash._0x0923DBF87DFF735E, _mainCamera.Position.X, _mainCamera.Position.Y, _mainCamera.Position.Z)
+                [Function].[Call](Hash._0x0923DBF87DFF735E, _MainCamera.Position.X, _MainCamera.Position.Y, _MainCamera.Position.Z)
                 _renderSceneTimer.Reset()
             End If
 
             [Function].[Call](Hash.HIDE_HUD_AND_RADAR_THIS_FRAME)
             [Function].[Call](Hash.HIDE_HUD_COMPONENT_THIS_FRAME, 18)
 
-            _previousPos = _mainCamera.Position
+            _previousPos = _MainCamera.Position
 
             If _replayTimer.Enabled AndAlso Game.GameTime > _replayTimer.Waiter Then
-                [Function].[Call](Hash.SET_CAM_SPLINE_PHASE, _mainCamera.Handle, 0F)
+                [Function].[Call](Hash.SET_CAM_SPLINE_PHASE, _MainCamera.Handle, 0F)
                 _replayTimer.Enabled = False
             End If
 
-            If Not _mainCamera.IsInterpolating Then
-                If [Function].[Call](Of Single)(Hash.GET_CAM_SPLINE_PHASE, _mainCamera.Handle) > 0.001F Then
+            If Not _MainCamera.IsInterpolating Then
+                If [Function].[Call](Of Single)(Hash.GET_CAM_SPLINE_PHASE, _MainCamera.Handle) > 0.001F Then
                     If InterpToPlayer Then
                         [Function].[Call](Hash.RENDER_SCRIPT_CAMS, 0, 1, 3000, 1, 1,
                             1)

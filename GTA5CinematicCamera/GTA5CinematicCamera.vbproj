@@ -153,11 +153,5 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WaifuGuards\WaifuGuards.vbproj">
-      <Project>{e5e767c2-933c-484e-82c7-9ab32bb0738b}</Project>
-      <Name>WaifuGuards</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
