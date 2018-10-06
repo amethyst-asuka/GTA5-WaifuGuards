@@ -25,6 +25,8 @@ Public Class HelicopterView : Inherits Script
                 pilot = helicopter.CreatePedOnSeat(VehicleSeat.Driver, model)
                 pilot.AlwaysKeepTask = True
                 pilot.BlockPermanentEvents = True
+
+                pilot.Task.CruiseWithVehicle(helicopter, 10, 0)
             Else
                 ' toggle off
                 Call camera.ExitCameraView
@@ -38,7 +40,7 @@ Public Class HelicopterView : Inherits Script
 
     Private Sub HelicopterView_Tick(sender As Object, e As EventArgs) Handles Me.Tick
         If (Not pilot Is Nothing) AndAlso last - Now > New TimeSpan(0, 0, 3) Then
-            Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(5, 5, 10)
+            Dim abovePlayer As Vector3 = Game.Player.Character.Position + New Vector3(5, 5, 40)
             Dim followPlayer As InputArgument() = New InputArgument() {
                 pilot, helicopter, 0, 0,
                 abovePlayer.X, abovePlayer.Y, abovePlayer.Z,
