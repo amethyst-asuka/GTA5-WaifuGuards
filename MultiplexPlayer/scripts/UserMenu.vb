@@ -2,16 +2,27 @@
 Imports GTA
 Imports GTA5.Multiplex
 Imports Microsoft.VisualBasic.Language
-Imports Microsoft.VisualBasic.Net
 Imports Microsoft.VisualBasic.Net.Protocols
+Imports Microsoft.VisualBasic.Net.Tcp
 
 Public Class UserMenu : Inherits Script
 
     Const GameServerPort% = 22335
     Const UserServerPort% = 22336
 
-    Dim gameServer As AsynInvoke, userServer As AsynInvoke
+    Dim gameServer As TcpRequest, userServer As TcpRequest
     Dim user As NetworkUser
+
+    Sub New()
+#If DEBUG Then
+        gameServer = New TcpRequest("127.0.0.1", 22335)
+        userServer = New TcpRequest("127.0.0.1", 22336)
+        user = New NetworkUser With {
+            .ModelName = "testxxx",
+            .Name = "12345"
+        }
+#End If
+    End Sub
 
 #Region "Menu Item"
 

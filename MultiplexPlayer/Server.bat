@@ -1,0 +1,1 @@
+"./build/GTA5Server.exe" /run
