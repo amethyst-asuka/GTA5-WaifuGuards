@@ -68,6 +68,7 @@ Public Class WaifuScript : Inherits Script
                 End Sub)
 
             Call waifuGuards.Add(waifu)
+            Call UI.ShowSubtitle($"[{name}] joined.")
         End If
     End Sub
 
